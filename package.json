@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:js": "esbuild entry.jsx --bundle --loader:.jsx=jsx --jsx=automatic --define:process.env.NODE_ENV=\"production\" --minify --target=es2018 --outfile=app.bundle.js",
+    "build:js": "esbuild entry.jsx --bundle --loader:.jsx=jsx --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" --minify --target=es2018 --outfile=app.bundle.js",
     "build:css": "tailwindcss -c tailwind.config.js -i input.css -o output.css --minify",
     "build:inline": "node inline.mjs",
     "build": "npm run build:js && npm run build:css && npm run build:inline",
