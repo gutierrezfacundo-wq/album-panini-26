@@ -2003,8 +2003,8 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName
             >
               {String(number).padStart(2, '0')}
             </div>
-            <div className="font-display text-3xl" style={{ color: '#E7E5E4' }}>
-              26
+            <div className="font-display text-5xl" style={{ color: '#E7E5E4', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+              {String(number).padStart(2, '0')}
             </div>
           </div>
         )}
@@ -2035,7 +2035,7 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName
                   fontSize: '4.2rem',
                 }}
               >
-                26
+                {String(number).padStart(2, '0')}
               </span>
             </div>
 
