@@ -1,3 +1,4 @@
+# Publishes dist/ to GitHub Pages on push to main.
 name: Deploy to GitHub Pages
 
 on:
