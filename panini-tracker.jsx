@@ -2208,6 +2208,7 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
           <div className="text-xs text-stone-500 mt-1">{t('home.brand.location')}</div>
         </div>
         <div className="flex items-center gap-1">
+          <InstallPrompt />
           <LangPicker />
           <button
             onClick={onResetClick}
@@ -2252,8 +2253,6 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
           </div>
         </div>
       </div>
-
-      <InstallPrompt />
 
       {/* Quick actions: Buscar & Mis repes */}
       <div className="grid grid-cols-2 gap-2 mt-3">
@@ -2393,16 +2392,11 @@ function InstallPrompt() {
     <>
       <button
         onClick={handleClick}
-        className="w-full mt-3 bg-stone-900 text-white rounded-2xl panini-shadow p-3 flex items-center gap-3 active:scale-[0.99] transition-transform text-left"
+        className="text-stone-400 hover:text-stone-700 active:text-stone-900 p-2"
+        aria-label={t('install.button')}
+        title={t('install.button')}
       >
-        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-          <Download size={18} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="font-display text-sm leading-tight">{t('install.button')}</div>
-          <div className="text-[10px] text-white/60 leading-tight mt-0.5">{t('install.subtitle')}</div>
-        </div>
-        <ChevronRight size={18} className="text-white/50 flex-shrink-0" />
+        <Download size={18} />
       </button>
       {showIosModal && <IosInstallModal onClose={() => setShowIosModal(false)} isSafari={isSafari} />}
     </>
