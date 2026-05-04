@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages, Cloud, CloudOff, Copy, Link2, Loader2, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages, Cloud, CloudOff, Copy, Link2, Loader2, RefreshCw, Moon, Sun } from 'lucide-react';
 import { FLAGS } from './flags-data.js';
 
 // =========================
@@ -1166,6 +1166,8 @@ const T = {
     'sync.status.synced': 'Sincronizado',
     'sync.status.error': 'Sin conexión',
     'sync.info': 'Ingresá este código en otro dispositivo para compartir tu progreso.',
+    'repes.share': 'Compartir',
+    'repes.share.copied': '¡Copiado!',
   },
   en: {
     'loading': 'LOADING ALBUM...',
@@ -1298,6 +1300,8 @@ const T = {
     'sync.status.synced': 'Synced',
     'sync.status.error': 'Offline',
     'sync.info': 'Enter this code on another device to share your progress.',
+    'repes.share': 'Share',
+    'repes.share.copied': 'Copied!',
   },
   fr: {
     'loading': 'CHARGEMENT...',
@@ -1430,6 +1434,8 @@ const T = {
     'sync.status.synced': 'Synchronisé',
     'sync.status.error': 'Hors ligne',
     'sync.info': 'Entre ce code sur un autre appareil pour partager ta progression.',
+    'repes.share': 'Partager',
+    'repes.share.copied': 'Copié!',
   },
   it: {
     'loading': 'CARICAMENTO ALBUM...',
@@ -1562,6 +1568,8 @@ const T = {
     'sync.status.synced': 'Sincronizzato',
     'sync.status.error': 'Offline',
     'sync.info': 'Inserisci questo codice su un altro dispositivo per condividere i progressi.',
+    'repes.share': 'Condividi',
+    'repes.share.copied': 'Copiato!',
   },
   pt: {
     'loading': 'CARREGANDO ÁLBUM...',
@@ -1694,6 +1702,8 @@ const T = {
     'sync.status.synced': 'Sincronizado',
     'sync.status.error': 'Sem conexão',
     'sync.info': 'Digite este código em outro dispositivo para compartilhar seu progresso.',
+    'repes.share': 'Compartilhar',
+    'repes.share.copied': 'Copiado!',
   },
 };
 
@@ -1777,7 +1787,7 @@ const TEAM_BY_CODE = Object.fromEntries(ALL_TEAMS.map(t => [t.code, t]));
 // ALBUM PAGE ORDER (for prev/next page navigation)
 // =========================
 const ALL_PAGES = [
-  { type: 'simple', section: 'INTRO', labelKey: 'section.intro.title', subtitleKey: 'pageNav.album' },
+  { type: 'simple', section: 'INTRO', labelKey: 'section.intro.title', subtitleKey: 'section.intro.sub' },
   ...ALL_TEAMS.map((t) => ({
     type: 'team',
     code: t.code,
@@ -1994,6 +2004,16 @@ export default function App() {
   const [syncStatus, setSyncStatus] = useState('idle'); // 'idle'|'syncing'|'synced'|'error'
   const [showSyncPanel, setShowSyncPanel] = useState(false);
   const syncTimerRef = useRef(null);
+
+  const [darkMode, setDarkMode] = useState(() => {
+    try { return localStorage.getItem('panini26-dark-v1') === 'true'; } catch { return false; }
+  });
+
+  useEffect(() => {
+    if (darkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+    try { localStorage.setItem('panini26-dark-v1', String(darkMode)); } catch {}
+  }, [darkMode]);
 
   const setLang = useCallback((newLang) => {
     if (!SUPPORTED_LANGS.includes(newLang)) return;
@@ -2298,6 +2318,8 @@ export default function App() {
               showSyncPanel={showSyncPanel}
               setShowSyncPanel={setShowSyncPanel}
               onLinkCode={linkToCode}
+              darkMode={darkMode}
+              onToggleDark={() => setDarkMode(d => !d)}
             />
           </div>
         </div>
@@ -2327,6 +2349,8 @@ export default function App() {
                     onResetClick={openConfirmReset}
                     syncStatus={syncStatus}
                     onSyncClick={() => setShowSyncPanel(true)}
+                    darkMode={darkMode}
+                    onToggleDark={() => setDarkMode(d => !d)}
                   />
                 </div>
                 {/* Desktop: welcome placeholder */}
@@ -2351,6 +2375,7 @@ export default function App() {
                 onBack={goBack}
                 currentView={view}
                 onReplaceView={replaceView}
+                focusId={view.focusId}
               />
             )}
             {view.type === 'groups' && (
@@ -2373,6 +2398,7 @@ export default function App() {
                 onBack={goBack}
                 currentView={view}
                 onReplaceView={replaceView}
+                focusId={view.focusId}
               />
             )}
             {view.type === 'search' && (
@@ -2382,7 +2408,7 @@ export default function App() {
                 mode={mode}
                 setMode={setMode}
                 onStickerTap={handleStickerTap}
-                onResultNavigate={(id) => setView(viewForStickerId(id))}
+                onResultNavigate={(id) => navigate({ ...viewForStickerId(id), focusId: id })}
                 onBack={goBack}
               />
             )}
@@ -3211,7 +3237,7 @@ function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
 // =========================
 // TEAM VIEW (20 stickers)
 // =========================
-function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName, onBack, currentView, onReplaceView }) {
+function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName, onBack, currentView, onReplaceView, focusId }) {
   const { t, countryName } = useLang();
   const team = TEAM_BY_CODE[code];
   const teamLocalizedName = countryName(code);
@@ -3232,6 +3258,12 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
     const v = counts[`${code}-${i}`] || 0;
     if (v > 1) repesList.push({ n: i, count: v - 1, name: resolveName(`${code}-${i}`, names) });
   }
+
+  useEffect(() => {
+    if (!focusId) return;
+    const el = document.querySelector(`[data-sticker-id="${focusId}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [focusId]);
 
   return (
     <div className="px-4 pt-4">
@@ -3358,7 +3390,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
 // =========================
 // STICKER CELL — figurita-style when collected
 // =========================
-function StickerCell({ number, count, accent, flag, flagCode, code, fixedLabel, fixedKind, playerName, isCustomName, isPlayer, onTap, onEditName }) {
+function StickerCell({ number, count, accent, flag, flagCode, code, fixedLabel, fixedKind, playerName, isCustomName, isPlayer, onTap, onEditName, highlight }) {
   const { t } = useLang();
   const collected = count > 0;
   const dupes = Math.max(0, count - 1);
@@ -3373,7 +3405,10 @@ function StickerCell({ number, count, accent, flag, flagCode, code, fixedLabel, 
   const subColor = isLight ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.75)';
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
+      {highlight && (
+        <div className="absolute -inset-1.5 rounded-2xl ring-2 ring-rose-500 pointer-events-none z-10 animate-pulse" />
+      )}
       {/* Sticker square */}
       <button
         onClick={onTap}
