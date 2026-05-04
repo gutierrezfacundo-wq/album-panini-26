@@ -2518,7 +2518,7 @@ export default function App() {
                 counts={counts}
                 onStickerTap={handleStickerTap}
                 onResultNavigate={(id) => navigate({ ...viewForStickerId(id), focusId: id })}
-                onBack={goBack}
+                onBack={() => navigate({ type: 'home' })}
               />
             )}
           </div>
