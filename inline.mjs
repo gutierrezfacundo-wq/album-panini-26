@@ -16,7 +16,7 @@ const icon512 = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><
 const manifest = {
   name: 'Álbum Panini Mundial 26',
   short_name: 'Álbum 26',
-  description: 'Tracker del álbum Panini del Mundial 2026',
+  description: 'Mundial 2026 · figus y repes',
   start_url: './',
   scope: './',
   display: 'standalone',
