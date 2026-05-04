@@ -1048,6 +1048,8 @@ const T = {
     'home.action.repes.sub.empty': 'todavía nada',
     'home.sections': 'SECCIONES DEL ÁLBUM',
     'home.autosave': 'SE GUARDA AUTOMÁTICAMENTE',
+    'home.welcome.title': '¡Empezá tu álbum!',
+    'home.welcome.body': 'Elegí una sección a la izquierda para ver las figuritas.',
     'section.intro.title': 'FWC',
     'section.intro.sub': 'Trofeo, mascota, estadios',
     'section.teams.title': 'Equipos',
@@ -1165,6 +1167,8 @@ const T = {
     'home.action.repes.sub.empty': 'none yet',
     'home.sections': 'ALBUM SECTIONS',
     'home.autosave': 'AUTO-SAVED',
+    'home.welcome.title': 'Start your album!',
+    'home.welcome.body': 'Pick a section on the left to see the stickers.',
     'section.intro.title': 'FWC',
     'section.intro.sub': 'Trophy, mascot, stadiums',
     'section.teams.title': 'Teams',
@@ -1282,6 +1286,8 @@ const T = {
     'home.action.repes.sub.empty': 'aucun pour l\'instant',
     'home.sections': 'SECTIONS DE L\'ALBUM',
     'home.autosave': 'SAUVEGARDE AUTOMATIQUE',
+    'home.welcome.title': 'Démarre ton album !',
+    'home.welcome.body': 'Choisis une section à gauche pour voir les vignettes.',
     'section.intro.title': 'FWC',
     'section.intro.sub': 'Trophée, mascotte, stades',
     'section.teams.title': 'Équipes',
@@ -1399,6 +1405,8 @@ const T = {
     'home.action.repes.sub.empty': 'ancora niente',
     'home.sections': 'SEZIONI DELL\'ALBUM',
     'home.autosave': 'SALVATAGGIO AUTOMATICO',
+    'home.welcome.title': 'Inizia il tuo album!',
+    'home.welcome.body': 'Scegli una sezione a sinistra per vedere le figurine.',
     'section.intro.title': 'FWC',
     'section.intro.sub': 'Trofeo, mascotte, stadi',
     'section.teams.title': 'Squadre',
@@ -1516,6 +1524,8 @@ const T = {
     'home.action.repes.sub.empty': 'ainda nada',
     'home.sections': 'SEÇÕES DO ÁLBUM',
     'home.autosave': 'SALVO AUTOMATICAMENTE',
+    'home.welcome.title': 'Comece seu álbum!',
+    'home.welcome.body': 'Escolha uma seção à esquerda para ver as figurinhas.',
     'section.intro.title': 'FWC',
     'section.intro.sub': 'Troféu, mascote, estádios',
     'section.teams.title': 'Seleções',
@@ -2095,121 +2105,276 @@ export default function App() {
 
   return (
     <LangContext.Provider value={langCtx}>
-    <div className="min-h-screen bg-stone-50 text-stone-900 pb-20" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen bg-stone-50 text-stone-900" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
-      <div className="max-w-md md:max-w-xl lg:max-w-2xl mx-auto relative">
-        {/* Decorative pattern background */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ctext x='0' y='42' font-family='Helvetica,Arial,sans-serif' font-weight='900' font-size='38' fill='%23000'%3E26%3C/text%3E%3C/svg%3E")`,
-          }}
+      {/* Desktop sidebar — hidden on mobile */}
+      <div className="hidden lg:flex flex-col fixed top-0 left-0 h-screen w-80 bg-white border-r border-stone-100 overflow-y-auto z-10">
+        <HomeSidebar
+          pct={pct}
+          dupesPct={dupesPct}
+          stats={stats}
+          sectionStats={sectionStats}
+          onNavigate={navigate}
+          onResetClick={openConfirmReset}
+          activeView={view}
         />
+      </div>
 
-        <div className="relative">
-          {view.type === 'home' && (
-            <HomeView
-              pct={pct}
-              dupesPct={dupesPct}
-              stats={stats}
-              sectionStats={sectionStats}
-              onNavigate={navigate}
-              onResetClick={openConfirmReset}
-            />
-          )}
-          {view.type === 'simple' && (
-            <SimpleGridView
-              section={view.section}
-              counts={counts}
-              mode={mode}
-              setMode={setMode}
-              onStickerTap={handleStickerTap}
-              onBack={goBack}
-              currentView={view}
-              onReplaceView={replaceView}
-            />
-          )}
-          {view.type === 'groups' && (
-            <GroupsView
-              counts={counts}
-              teamStats={teamStats}
-              onTeamSelect={(code) => navigate({ type: 'team', code })}
-              onBack={goBack}
-            />
-          )}
-          {view.type === 'team' && (
-            <TeamView
-              code={view.code}
-              counts={counts}
-              names={names}
-              mode={mode}
-              setMode={setMode}
-              onStickerTap={handleStickerTap}
-              onEditName={openEditModal}
-              onBack={goBack}
-              currentView={view}
-              onReplaceView={replaceView}
-            />
-          )}
-          {view.type === 'search' && (
-            <SearchView
-              counts={counts}
-              names={names}
-              mode={mode}
-              setMode={setMode}
-              onStickerTap={handleStickerTap}
-              onResultNavigate={(id) => setView(viewForStickerId(id))}
-              onBack={goBack}
-            />
-          )}
-          {view.type === 'repes' && (
-            <RepesView
-              counts={counts}
-              names={names}
-              mode={mode}
-              setMode={setMode}
-              onStickerTap={handleStickerTap}
-              onBack={goBack}
-            />
-          )}
-        </div>
-
-        {confirmReset && (
-          <ConfirmReset onCancel={closeConfirmReset} onConfirm={resetAll} />
-        )}
-
-        {editingId && (
-          <NameEditModal
-            stickerId={editingId}
-            currentName={resolveName(editingId, names)}
-            onCancel={closeEditModal}
-            onSave={(value) => {
-              updateName(editingId, value);
-              closeEditModal();
-            }}
-            onSaveAndNext={(value) => {
-              updateName(editingId, value);
-              // Advance to next player sticker on the same team if possible
-              const m = editingId.match(/^([A-Z]{3})-(\d+)$/);
-              if (m) {
-                const code = m[1];
-                let num = parseInt(m[2], 10);
-                // Find next player slot, skipping 1 (escudo) and 13 (team photo)
-                while (num < 20) {
-                  num += 1;
-                  if (num !== 13) {
-                    advanceEditModal(`${code}-${num}`);
-                    return;
-                  }
-                }
-              }
-              closeEditModal();
+      {/* Main content area — offset on desktop to clear sidebar */}
+      <div className="lg:ml-80 pb-20">
+        <div className="max-w-md md:max-w-xl lg:max-w-2xl mx-auto relative">
+          {/* Decorative pattern background */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.04]"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ctext x='0' y='42' font-family='Helvetica,Arial,sans-serif' font-weight='900' font-size='38' fill='%23000'%3E26%3C/text%3E%3C/svg%3E")`,
             }}
           />
-        )}
+
+          <div className="relative">
+            {view.type === 'home' && (
+              <>
+                {/* Mobile: full home view */}
+                <div className="lg:hidden">
+                  <HomeView
+                    pct={pct}
+                    dupesPct={dupesPct}
+                    stats={stats}
+                    sectionStats={sectionStats}
+                    onNavigate={navigate}
+                    onResetClick={openConfirmReset}
+                  />
+                </div>
+                {/* Desktop: welcome placeholder */}
+                <div className="hidden lg:flex min-h-screen items-center justify-center">
+                  <div className="text-center px-8">
+                    <div className="w-24 h-24 rounded-3xl bg-rose-50 flex items-center justify-center mx-auto mb-6">
+                      <span className="font-display text-4xl text-rose-600">26</span>
+                    </div>
+                    <div className="font-display text-2xl text-stone-700 mb-2">{t('home.welcome.title')}</div>
+                    <div className="text-stone-400 text-sm max-w-xs mx-auto leading-relaxed">{t('home.welcome.body')}</div>
+                  </div>
+                </div>
+              </>
+            )}
+            {view.type === 'simple' && (
+              <SimpleGridView
+                section={view.section}
+                counts={counts}
+                mode={mode}
+                setMode={setMode}
+                onStickerTap={handleStickerTap}
+                onBack={goBack}
+                currentView={view}
+                onReplaceView={replaceView}
+              />
+            )}
+            {view.type === 'groups' && (
+              <GroupsView
+                counts={counts}
+                teamStats={teamStats}
+                onTeamSelect={(code) => navigate({ type: 'team', code })}
+                onBack={goBack}
+              />
+            )}
+            {view.type === 'team' && (
+              <TeamView
+                code={view.code}
+                counts={counts}
+                names={names}
+                mode={mode}
+                setMode={setMode}
+                onStickerTap={handleStickerTap}
+                onEditName={openEditModal}
+                onBack={goBack}
+                currentView={view}
+                onReplaceView={replaceView}
+              />
+            )}
+            {view.type === 'search' && (
+              <SearchView
+                counts={counts}
+                names={names}
+                mode={mode}
+                setMode={setMode}
+                onStickerTap={handleStickerTap}
+                onResultNavigate={(id) => setView(viewForStickerId(id))}
+                onBack={goBack}
+              />
+            )}
+            {view.type === 'repes' && (
+              <RepesView
+                counts={counts}
+                names={names}
+                mode={mode}
+                setMode={setMode}
+                onStickerTap={handleStickerTap}
+                onBack={goBack}
+              />
+            )}
+          </div>
+        </div>
       </div>
+
+      {confirmReset && (
+        <ConfirmReset onCancel={closeConfirmReset} onConfirm={resetAll} />
+      )}
+
+      {editingId && (
+        <NameEditModal
+          stickerId={editingId}
+          currentName={resolveName(editingId, names)}
+          onCancel={closeEditModal}
+          onSave={(value) => {
+            updateName(editingId, value);
+            closeEditModal();
+          }}
+          onSaveAndNext={(value) => {
+            updateName(editingId, value);
+            // Advance to next player sticker on the same team if possible
+            const m = editingId.match(/^([A-Z]{3})-(\d+)$/);
+            if (m) {
+              const code = m[1];
+              let num = parseInt(m[2], 10);
+              // Find next player slot, skipping 1 (escudo) and 13 (team photo)
+              while (num < 20) {
+                num += 1;
+                if (num !== 13) {
+                  advanceEditModal(`${code}-${num}`);
+                  return;
+                }
+              }
+            }
+            closeEditModal();
+          }}
+        />
+      )}
     </div>
     </LangContext.Provider>
+  );
+}
+
+
+// =========================
+// HOME SIDEBAR (desktop only)
+// =========================
+function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, activeView }) {
+  const { t } = useLang();
+
+  const sections = [
+    { key: 'intro',  title: t('section.intro.title'),  sub: t('section.intro.sub'),   icon: <Sparkles size={15} />, accent: '#1E40AF', view: { type: 'simple', section: 'INTRO' } },
+    { key: 'teams',  title: t('section.teams.title'),  sub: t('section.teams.sub'),   icon: <Users size={15} />,    accent: '#E11D48', view: { type: 'groups' } },
+    { key: 'museum', title: t('section.museum.title'), sub: t('section.museum.sub'),  icon: <Trophy size={15} />,   accent: '#F59E0B', view: { type: 'simple', section: 'MUSEUM' } },
+    { key: 'coca',   title: t('section.coca.title'),   sub: t('section.coca.sub'),    icon: <Star size={15} />,     accent: '#DC2626', view: { type: 'simple', section: 'COCA' }, extra: true },
+  ];
+
+  return (
+    <div className="flex flex-col h-full px-5 py-6">
+      {/* Brand row */}
+      <div className="flex items-center justify-between mb-6">
+        <button
+          onClick={() => onNavigate({ type: 'home' })}
+          className="font-display text-2xl leading-none text-left"
+        >
+          {t('home.brand.album')} <span className="text-rose-600">26</span>
+        </button>
+        <div className="flex items-center gap-0.5">
+          <InstallPrompt />
+          <LangPicker />
+          <button
+            onClick={onResetClick}
+            className="text-stone-400 hover:text-stone-600 p-2"
+            aria-label={t('home.reset.aria')}
+          >
+            <RotateCcw size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Progress */}
+      <div className="bg-stone-50 rounded-2xl p-4 mb-4">
+        <div className="font-mono-special text-[9px] tracking-[0.25em] text-stone-400 mb-1">{t('home.progress')}</div>
+        <div className="flex items-baseline gap-1.5 mb-3">
+          <div className="font-display text-5xl leading-none">{pct}</div>
+          <div className="font-display text-xl text-stone-400">%</div>
+          <div className="font-mono-special text-sm text-stone-400 ml-1">{stats.unique}<span className="text-stone-300">/{TOTAL_BASE}</span></div>
+        </div>
+        <div className="h-1.5 bg-stone-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-rose-600 to-amber-500 rounded-full transition-all duration-500"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-1.5 mt-3">
+          <StatCell icon={<Check size={12} />} value={stats.unique} label={t('home.stats.collected')} tone="emerald" />
+          <StatCell icon={<Hash size={12} />} value={stats.missing} label={t('home.stats.missing')} tone="rose" />
+          <StatCell icon={<Flame size={12} />} value={stats.dupes} label={t('home.stats.dupes')} tone="amber" sub={stats.unique > 0 ? `${dupesPct}%` : null} />
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <button
+          onClick={() => onNavigate({ type: 'search' })}
+          className={`flex items-center gap-2 rounded-xl px-3 py-2.5 transition-colors text-left ${activeView.type === 'search' ? 'bg-stone-900 text-white' : 'bg-stone-100 hover:bg-stone-200 text-stone-700'}`}
+        >
+          <Search size={14} className="flex-shrink-0" />
+          <span className="font-display text-sm">{t('home.action.search')}</span>
+        </button>
+        <button
+          onClick={() => onNavigate({ type: 'repes' })}
+          className={`flex items-center gap-2 rounded-xl px-3 py-2.5 transition-colors text-left ${activeView.type === 'repes' ? 'bg-amber-400 text-stone-900' : 'bg-stone-100 hover:bg-stone-200 text-stone-700'}`}
+        >
+          <Flame size={14} className="flex-shrink-0" />
+          <span className="font-display text-sm">{t('home.action.repes')}</span>
+          {stats.dupes > 0 && <span className="font-mono-special text-[10px] opacity-60">{stats.dupes}</span>}
+        </button>
+      </div>
+
+      {/* Section nav */}
+      <div className="font-mono-special text-[9px] tracking-[0.25em] text-stone-400 mb-2">{t('home.sections')}</div>
+      <div className="space-y-0.5 flex-1">
+        {sections.map(sec => {
+          const ss = sectionStats[sec.key];
+          const secPct = ss.total > 0 ? Math.round((ss.collected / ss.total) * 100) : 0;
+          const isActive = activeView.type === sec.view.type &&
+            (sec.view.type !== 'simple' || activeView.section === sec.view.section);
+          return (
+            <button
+              key={sec.key}
+              onClick={() => onNavigate(sec.view)}
+              className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors text-left ${isActive ? 'bg-stone-100' : 'hover:bg-stone-50'}`}
+            >
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-white flex-shrink-0"
+                style={{ backgroundColor: sec.accent }}
+              >
+                {sec.icon}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="font-display text-sm leading-tight flex items-center gap-1.5">
+                  {sec.title}
+                  {sec.extra && (
+                    <span className="text-[8px] font-mono-special tracking-widest bg-amber-100 text-amber-800 px-1 py-0.5 rounded">
+                      BONUS
+                    </span>
+                  )}
+                </div>
+                <div className="text-[10px] text-stone-400 truncate">{sec.sub}</div>
+              </div>
+              <div className="text-right flex-shrink-0">
+                <div className="font-mono-special text-xs font-bold">{ss.collected}<span className="text-stone-300">/{ss.total}</span></div>
+                <div className="text-[9px] text-stone-300 font-mono-special">{secPct}%</div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="text-center text-[10px] text-stone-300 mt-4 font-mono-special tracking-widest">
+        {t('home.autosave')}
+      </div>
+    </div>
   );
 }
 
