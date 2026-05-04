@@ -2122,7 +2122,7 @@ export default function App() {
 
       {/* Main content area — offset on desktop to clear sidebar */}
       <div className="lg:ml-80 pb-20">
-        <div className="max-w-md md:max-w-xl lg:max-w-2xl mx-auto lg:ml-0 lg:pl-8 relative">
+        <div className="max-w-md md:max-w-xl lg:max-w-3xl mx-auto relative">
           {/* Decorative pattern background */}
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.04]"
