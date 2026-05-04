@@ -1,6 +1,7 @@
 node_modules/
 app.bundle.js
 output.css
+flags-data.js
 *.log
 .DS_Store
 .env

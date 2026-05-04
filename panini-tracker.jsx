@@ -1,5 +1,21 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages } from 'lucide-react';
+import { FLAGS } from './flags-data.js';
+
+// =========================
+// FLAG ICON — renders an inline SVG flag if available, falls back to
+// the emoji on systems / for codes we don't have a SVG for. Works on
+// Windows where flag emojis aren't supported.
+// =========================
+function FlagIcon({ code, fallback, className = '' }) {
+  const src = code && FLAGS[code];
+  if (src) {
+    return <img src={src} alt="" className={className} draggable={false} />;
+  }
+  if (fallback) return <span className={className}>{fallback}</span>;
+  return null;
+}
+
 
 // =========================
 // DATA
@@ -963,17 +979,17 @@ const INTRO_INFO = [
 ];
 
 const MUSEUM_INFO = [
-  { labelKey: 'museum.italy1934',        code: '1934', accent: '#0066CC', flag: '🇮🇹' },
-  { labelKey: 'museum.uruguay1950',      code: '1950', accent: '#0038A8', flag: '🇺🇾' },
-  { labelKey: 'museum.westGermany1954',  code: '1954', accent: '#1A1A1A', flag: '🇩🇪' },
-  { labelKey: 'museum.brazil1962',       code: '1962', accent: '#FFCC29', flag: '🇧🇷' },
-  { labelKey: 'museum.westGermany1974',  code: '1974', accent: '#1A1A1A', flag: '🇩🇪' },
-  { labelKey: 'museum.argentina1986',    code: '1986', accent: '#74ACDF', flag: '🇦🇷' },
-  { labelKey: 'museum.brazil1994',       code: '1994', accent: '#FFCC29', flag: '🇧🇷' },
-  { labelKey: 'museum.brazil2002',       code: '2002', accent: '#FFCC29', flag: '🇧🇷' },
-  { labelKey: 'museum.italy2006',        code: '2006', accent: '#0066CC', flag: '🇮🇹' },
-  { labelKey: 'museum.germany2014',      code: '2014', accent: '#1A1A1A', flag: '🇩🇪' },
-  { labelKey: 'museum.argentina2022',    code: '2022', accent: '#74ACDF', flag: '🇦🇷' },
+  { labelKey: 'museum.italy1934',        code: '1934', accent: '#0066CC', flag: '🇮🇹', countryCode: 'ITA' },
+  { labelKey: 'museum.uruguay1950',      code: '1950', accent: '#0038A8', flag: '🇺🇾', countryCode: 'URU' },
+  { labelKey: 'museum.westGermany1954',  code: '1954', accent: '#1A1A1A', flag: '🇩🇪', countryCode: 'GER' },
+  { labelKey: 'museum.brazil1962',       code: '1962', accent: '#FFCC29', flag: '🇧🇷', countryCode: 'BRA' },
+  { labelKey: 'museum.westGermany1974',  code: '1974', accent: '#1A1A1A', flag: '🇩🇪', countryCode: 'GER' },
+  { labelKey: 'museum.argentina1986',    code: '1986', accent: '#74ACDF', flag: '🇦🇷', countryCode: 'ARG' },
+  { labelKey: 'museum.brazil1994',       code: '1994', accent: '#FFCC29', flag: '🇧🇷', countryCode: 'BRA' },
+  { labelKey: 'museum.brazil2002',       code: '2002', accent: '#FFCC29', flag: '🇧🇷', countryCode: 'BRA' },
+  { labelKey: 'museum.italy2006',        code: '2006', accent: '#0066CC', flag: '🇮🇹', countryCode: 'ITA' },
+  { labelKey: 'museum.germany2014',      code: '2014', accent: '#1A1A1A', flag: '🇩🇪', countryCode: 'GER' },
+  { labelKey: 'museum.argentina2022',    code: '2022', accent: '#74ACDF', flag: '🇦🇷', countryCode: 'ARG' },
 ];
 
 const COCA_INFO = [
@@ -1767,6 +1783,7 @@ function allStickers(counts, names, t, countryName) {
       label,
       flag: info.flag,
       code: info.code,
+      flagCode: info.code,
       accent: info.accent,
       count: counts[id] || 0,
       searchable: normalize(`${label} ${info.code} ${introTitle} fwc intro introduccion introduction introduzione introducao`),
@@ -1785,6 +1802,7 @@ function allStickers(counts, names, t, countryName) {
       label,
       flag: info.flag,
       code: info.code,
+      flagCode: info.countryCode || info.code,
       accent: info.accent,
       count: counts[id] || 0,
       searchable: normalize(`${label} ${info.code} ${museumTitle} fwc museo museum musee museu fifa campeon champion`),
@@ -1812,6 +1830,7 @@ function allStickers(counts, names, t, countryName) {
           label,
           flag: tm.flag,
           code: tm.code,
+          flagCode: tm.code,
           accent: tm.color,
           isPlayer,
           count: counts[id] || 0,
@@ -1832,6 +1851,7 @@ function allStickers(counts, names, t, countryName) {
       label: info.label,
       flag: info.flag,
       code: info.code,
+      flagCode: info.code,
       accent: info.accent,
       count: counts[id] || 0,
       searchable: normalize(`${info.label} ${info.code} coca cola coca-cola`),
@@ -2470,23 +2490,23 @@ function LangPicker() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="text-stone-500 hover:text-stone-900 p-2 flex items-center gap-1"
+        className="text-stone-500 hover:text-stone-900 p-2 flex items-center gap-1.5"
         aria-label={t('lang.picker')}
       >
-        <Languages size={16} />
+        <FlagIcon code={`__lang_${lang}`} fallback={LANG_INFO[lang].flag} className="w-5 h-3.5 rounded-[1px] object-cover shadow-sm" />
         <span className="font-mono-special text-[10px] font-bold uppercase">{lang}</span>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-white rounded-xl panini-shadow z-30 min-w-[160px] py-1 overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 bg-white rounded-xl panini-shadow z-30 min-w-[170px] py-1 overflow-hidden">
           {SUPPORTED_LANGS.map(code => (
             <button
               key={code}
               onClick={() => { setLang(code); setOpen(false); }}
-              className={`w-full px-3 py-2 text-left flex items-center gap-2 text-sm active:bg-stone-100 ${
+              className={`w-full px-3 py-2 text-left flex items-center gap-2.5 text-sm active:bg-stone-100 ${
                 code === lang ? 'bg-stone-100 font-semibold' : 'hover:bg-stone-50'
               }`}
             >
-              <span className="font-mono-special text-[10px] bg-stone-200 text-stone-700 px-1.5 py-0.5 rounded uppercase">{code}</span>
+              <FlagIcon code={`__lang_${code}`} fallback={LANG_INFO[code].flag} className="w-6 h-4 rounded-[2px] object-cover shadow-sm" />
               <span className="flex-1">{LANG_INFO[code].label}</span>
               {code === lang && <Check size={14} className="text-emerald-600" />}
             </button>
@@ -2596,6 +2616,7 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
               count={count}
               accent={info.accent}
               flag={info.flag}
+              flagCode={info.countryCode || info.code}
               code={info.code}
               fixedLabel={label}
               isPlayer={false}
@@ -2653,7 +2674,7 @@ function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
                           className="rounded-lg w-12 h-12 flex flex-col items-center justify-center flex-shrink-0 relative overflow-hidden"
                           style={{ backgroundColor: tm.color }}
                         >
-                          <div className="text-2xl leading-none">{tm.flag}</div>
+                          <FlagIcon code={tm.code} fallback={tm.flag} className="w-7 h-5 rounded-[2px] object-cover shadow-sm" />
                           <div
                             className="font-mono-special text-[8px] tracking-widest mt-0.5 font-bold"
                             style={{ color: textOn(tm.color), opacity: 0.85 }}
@@ -2761,7 +2782,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
           </div>
           <div className="flex items-center gap-3 mt-1">
             <div className="font-display text-3xl leading-none uppercase">{teamLocalizedName}</div>
-            <span className="text-3xl leading-none">{team.flag}</span>
+            <FlagIcon code={team.code} fallback={team.flag} className="w-10 h-7 rounded-sm shadow-sm object-cover" />
           </div>
 
           <div className="flex items-baseline gap-2 mt-4">
@@ -2805,6 +2826,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
               count={count}
               accent={team.color}
               flag={team.flag}
+              flagCode={team.code}
               code={team.code}
               fixedLabel={fixedLabel}
               fixedKind={fixedKind}
@@ -2851,7 +2873,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
 // =========================
 // STICKER CELL — figurita-style when collected
 // =========================
-function StickerCell({ number, count, accent, flag, code, fixedLabel, fixedKind, playerName, isCustomName, isPlayer, onTap, onEditName }) {
+function StickerCell({ number, count, accent, flag, flagCode, code, fixedLabel, fixedKind, playerName, isCustomName, isPlayer, onTap, onEditName }) {
   const { t } = useLang();
   const collected = count > 0;
   const dupes = Math.max(0, count - 1);
@@ -2930,9 +2952,9 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, fixedKind,
             </div>
 
             {/* Top-right flag (only if provided) */}
-            {flag && (
-              <div className="absolute top-0.5 right-1 text-[14px] leading-none">
-                {flag}
+            {(flag || flagCode) && (
+              <div className="absolute top-0.5 right-1 leading-none">
+                <FlagIcon code={flagCode} fallback={flag} className="w-4 h-3 rounded-[1px] object-cover" />
               </div>
             )}
 
@@ -3046,7 +3068,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
       >
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
-            <span className="text-xl">{team.flag}</span>
+            <FlagIcon code={team.code} fallback={team.flag} className="w-7 h-5 rounded-sm shadow-sm object-cover" />
             <div className="font-display text-base">{countryName(team.code)}</div>
           </div>
           <button
@@ -3120,7 +3142,9 @@ function ResultRow({ s, onTap }) {
         className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 relative overflow-hidden"
         style={{ backgroundColor: s.accent }}
       >
-        {s.flag ? (
+        {s.flagCode && FLAGS[s.flagCode] ? (
+          <FlagIcon code={s.flagCode} className="w-6 h-4 rounded-[2px] object-cover shadow-sm" />
+        ) : s.flag ? (
           <span className="text-lg leading-none">{s.flag}</span>
         ) : (
           <span className="font-display text-[9px] tracking-wider" style={{ color: fg }}>
