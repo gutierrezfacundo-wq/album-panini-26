@@ -41,6 +41,7 @@ const html = template
 fs.mkdirSync('dist', { recursive: true });
 fs.writeFileSync('dist/index.html', html);
 fs.writeFileSync('dist/.nojekyll', '');
+fs.writeFileSync('dist/CNAME', 'album26.app\n');
 
 const size = fs.statSync('dist/index.html').size;
 console.log(`✓ dist/index.html  ${(size / 1024).toFixed(1)} KB`);
