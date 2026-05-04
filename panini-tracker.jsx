@@ -2258,7 +2258,14 @@ export default function App() {
   // Each user-meaningful screen state is one history entry, so the OS / browser
   // back button (and the in-app "Volver") behave the same.
   const navigate = useCallback((newView) => {
-    history.pushState({ view: newView, modal: null }, '');
+    // If currently on the compare view (a transient one-time view from a
+    // shared link), replace it instead of pushing — so the back stack
+    // doesn't trap the user inside compare.
+    if (history.state?.view?.type === 'compare') {
+      history.replaceState({ view: newView, modal: null }, '');
+    } else {
+      history.pushState({ view: newView, modal: null }, '');
+    }
     setView(newView);
     setEditingId(null);
     setConfirmReset(false);
