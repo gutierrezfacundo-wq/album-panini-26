@@ -1168,6 +1168,19 @@ const T = {
     'sync.info': 'Ingresá este código en otro dispositivo para compartir tu progreso.',
     'repes.share': 'Compartir',
     'repes.share.copied': '¡Copiado!',
+    'repes.share.intro': 'Mirá las repes que tengo y compará con las tuyas:',
+    'compare.back': 'Volver',
+    'compare.title': 'Repes de tu amigo',
+    'compare.code': 'Código',
+    'compare.opps.title': 'TE SERVIRÍAN',
+    'compare.opps.sub': 'tu amigo las tiene repetidas y a vos te faltan',
+    'compare.have.title': 'YA LAS TENÉS PEGADAS',
+    'compare.have.sub': 'tu amigo también las tiene repetidas',
+    'compare.empty.title': 'Sin repes para canjear',
+    'compare.empty.sub': 'Tu amigo todavía no tiene figuritas repetidas, o ya las tenés todas pegadas.',
+    'compare.banner.title': 'Tu amigo te compartió sus repes',
+    'compare.banner.button': 'Ver',
+    'compare.banner.dismiss': 'Cerrar',
   },
   en: {
     'loading': 'LOADING ALBUM...',
@@ -1302,6 +1315,19 @@ const T = {
     'sync.info': 'Enter this code on another device to share your progress.',
     'repes.share': 'Share',
     'repes.share.copied': 'Copied!',
+    'repes.share.intro': 'Check out my dupes and compare with yours:',
+    'compare.back': 'Back',
+    'compare.title': 'Friend’s dupes',
+    'compare.code': 'Code',
+    'compare.opps.title': 'YOU NEED THESE',
+    'compare.opps.sub': 'your friend has these as dupes and you’re missing them',
+    'compare.have.title': 'ALREADY STUCK',
+    'compare.have.sub': 'your friend also has these as dupes',
+    'compare.empty.title': 'No dupes to trade',
+    'compare.empty.sub': 'Your friend doesn’t have any dupes yet, or you already have all the ones they’d trade.',
+    'compare.banner.title': 'A friend shared their dupes with you',
+    'compare.banner.button': 'View',
+    'compare.banner.dismiss': 'Dismiss',
   },
   fr: {
     'loading': 'CHARGEMENT...',
@@ -1435,7 +1461,20 @@ const T = {
     'sync.status.error': 'Hors ligne',
     'sync.info': 'Entre ce code sur un autre appareil pour partager ta progression.',
     'repes.share': 'Partager',
-    'repes.share.copied': 'Copié!',
+    'repes.share.copied': 'Copié !',
+    'repes.share.intro': 'Voici mes doubles, compare avec les tiens :',
+    'compare.back': 'Retour',
+    'compare.title': 'Doubles de ton ami',
+    'compare.code': 'Code',
+    'compare.opps.title': 'IL TE LES FAUT',
+    'compare.opps.sub': 'ton ami les a en double et il te les manque',
+    'compare.have.title': 'DÉJÀ COLLÉES',
+    'compare.have.sub': 'ton ami les a aussi en double',
+    'compare.empty.title': 'Aucun double à échanger',
+    'compare.empty.sub': 'Ton ami n’a pas encore de doubles, ou tu as déjà toutes celles qu’il pourrait échanger.',
+    'compare.banner.title': 'Un ami t’a partagé ses doubles',
+    'compare.banner.button': 'Voir',
+    'compare.banner.dismiss': 'Fermer',
   },
   it: {
     'loading': 'CARICAMENTO ALBUM...',
@@ -1570,6 +1609,19 @@ const T = {
     'sync.info': 'Inserisci questo codice su un altro dispositivo per condividere i progressi.',
     'repes.share': 'Condividi',
     'repes.share.copied': 'Copiato!',
+    'repes.share.intro': 'Ecco le mie doppie, confronta con le tue:',
+    'compare.back': 'Indietro',
+    'compare.title': 'Doppie del tuo amico',
+    'compare.code': 'Codice',
+    'compare.opps.title': 'TI SERVIREBBERO',
+    'compare.opps.sub': 'il tuo amico le ha doppie e a te mancano',
+    'compare.have.title': 'GIÀ ATTACCATE',
+    'compare.have.sub': 'anche il tuo amico le ha doppie',
+    'compare.empty.title': 'Nessuna doppia da scambiare',
+    'compare.empty.sub': 'Il tuo amico non ha ancora doppie, o tu hai già tutte quelle che potrebbe scambiare.',
+    'compare.banner.title': 'Un amico ha condiviso le sue doppie',
+    'compare.banner.button': 'Vedi',
+    'compare.banner.dismiss': 'Chiudi',
   },
   pt: {
     'loading': 'CARREGANDO ÁLBUM...',
@@ -1704,6 +1756,19 @@ const T = {
     'sync.info': 'Digite este código em outro dispositivo para compartilhar seu progresso.',
     'repes.share': 'Compartilhar',
     'repes.share.copied': 'Copiado!',
+    'repes.share.intro': 'Olha as minhas repetidas e compara com as suas:',
+    'compare.back': 'Voltar',
+    'compare.title': 'Repetidas do seu amigo',
+    'compare.code': 'Código',
+    'compare.opps.title': 'VOCÊ PRECISA',
+    'compare.opps.sub': 'seu amigo as tem repetidas e a você faltam',
+    'compare.have.title': 'JÁ ESTÃO COLADAS',
+    'compare.have.sub': 'seu amigo também as tem repetidas',
+    'compare.empty.title': 'Sem repetidas para trocar',
+    'compare.empty.sub': 'Seu amigo ainda não tem repetidas, ou você já tem todas as que ele poderia trocar.',
+    'compare.banner.title': 'Um amigo compartilhou as repetidas com você',
+    'compare.banner.button': 'Ver',
+    'compare.banner.dismiss': 'Fechar',
   },
 };
 
@@ -2070,6 +2135,28 @@ export default function App() {
       }
       setSyncStatus('synced');
     }).catch(() => setSyncStatus('error'));
+
+    // Detect ?compare=CODE in URL and open the comparison view
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const compareCode = params.get('compare');
+      if (compareCode) {
+        cloudPull(compareCode).then(data => {
+          if (data && data._ts != null) {
+            const friendCode = compareCode.length === 8
+              ? compareCode.slice(0, 4) + '-' + compareCode.slice(4)
+              : compareCode;
+            const view = { type: 'compare', friendCode, friendData: data };
+            history.replaceState({ view, modal: null }, '');
+            setView(view);
+          }
+        }).catch(() => {});
+        // Clean the URL so refreshes don't re-trigger
+        const url = new URL(window.location.href);
+        url.searchParams.delete('compare');
+        window.history.replaceState(null, '', url.toString());
+      }
+    } catch (e) {}
   }, []);
 
   // Save counts on change
@@ -2399,6 +2486,7 @@ export default function App() {
                 currentView={view}
                 onReplaceView={replaceView}
                 focusId={view.focusId}
+                onRepesClick={() => navigate({ type: 'repes' })}
               />
             )}
             {view.type === 'search' && (
@@ -2419,6 +2507,17 @@ export default function App() {
                 mode={mode}
                 setMode={setMode}
                 onStickerTap={handleStickerTap}
+                onBack={goBack}
+                syncCode={syncCode}
+              />
+            )}
+            {view.type === 'compare' && (
+              <CompareView
+                friendCode={view.friendCode}
+                friendData={view.friendData}
+                counts={counts}
+                onStickerTap={handleStickerTap}
+                onResultNavigate={(id) => navigate({ ...viewForStickerId(id), focusId: id })}
                 onBack={goBack}
               />
             )}
@@ -3044,9 +3143,9 @@ function LangPicker() {
 
 function StatCell({ icon, value, label, tone, sub }) {
   const toneMap = {
-    emerald: 'bg-emerald-50 text-emerald-700',
-    rose: 'bg-rose-50 text-rose-700',
-    amber: 'bg-amber-50 text-amber-700',
+    emerald: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:!text-emerald-300',
+    rose:    'bg-rose-50 text-rose-700 dark:bg-rose-950 dark:!text-rose-300',
+    amber:   'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:!text-amber-300',
   };
   return (
     <div className={`rounded-xl px-2 py-3 ${toneMap[tone]}`}>
@@ -3259,7 +3358,7 @@ function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
 // =========================
 // TEAM VIEW (20 stickers)
 // =========================
-function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName, onBack, currentView, onReplaceView, focusId }) {
+function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName, onBack, currentView, onReplaceView, focusId, onRepesClick }) {
   const { t, countryName } = useLang();
   const team = TEAM_BY_CODE[code];
   const teamLocalizedName = countryName(code);
@@ -3382,12 +3481,18 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
       </div>
 
       {repesList.length > 0 && (
-        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Flame size={14} className="text-amber-700" />
-            <div className="font-mono-special text-[10px] tracking-[0.2em] text-amber-800">
-              {t('team.repesPanel')}
+        <button
+          onClick={onRepesClick}
+          className="mt-6 w-full bg-amber-50 border border-amber-200 rounded-2xl p-4 text-left active:scale-[0.99] transition-transform"
+        >
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <div className="flex items-center gap-2">
+              <Flame size={14} className="text-amber-700" />
+              <div className="font-mono-special text-[10px] tracking-[0.2em] text-amber-800">
+                {t('team.repesPanel')}
+              </div>
             </div>
+            <ChevronRight size={16} className="text-amber-700 flex-shrink-0" />
           </div>
           <div className="flex flex-wrap gap-1.5">
             {repesList.map(r => (
@@ -3401,11 +3506,11 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
               </div>
             ))}
           </div>
-        </div>
+        </button>
       )}
 
       <PageNav currentView={currentView} onReplaceView={onReplaceView} />
-      <Legend hasNames />
+      <Legend />
     </div>
   );
 }
@@ -3543,25 +3648,13 @@ function StickerCell({ number, count, accent, flag, flagCode, code, fixedLabel, 
           {fixedLabel}
         </div>
       ) : (
-        <button
-          onClick={onEditName}
-          className="mt-1.5 text-center min-h-[16px] active:bg-stone-100 rounded transition-colors px-0.5"
-        >
-          {playerName ? (
-            <div
-              className={`text-[11px] truncate leading-tight ${
-                isCustomName ? 'font-semibold text-stone-900' : 'font-medium text-stone-700'
-              }`}
-            >
+        <div className="mt-1.5 text-center min-h-[16px] px-0.5">
+          {playerName && (
+            <div className="text-[11px] truncate leading-tight font-medium text-stone-700">
               {playerName}
             </div>
-          ) : (
-            <div className="text-[10px] text-stone-400 truncate flex items-center justify-center gap-0.5">
-              <Pencil size={9} />
-              <span>{t('sticker.namePlaceholder')}</span>
-            </div>
           )}
-        </button>
+        </div>
       )}
     </div>
   );
@@ -3823,7 +3916,7 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
 // =========================
 // REPES VIEW
 // =========================
-function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
+function RepesView({ counts, names, mode, setMode, onStickerTap, onBack, syncCode }) {
   const { t, lang, countryName } = useLang();
   const all = useMemo(() => allStickers(counts, names, t, countryName), [counts, names, lang, t, countryName]);
 
@@ -3852,24 +3945,26 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
   const handleShare = useCallback(() => {
     const lines = [`${totalRepes} repes · Álbum Panini 2026`, ''];
     for (const g of groups) {
-      const items = g.items
-        .map(s => {
-          const name = s.displayName || s.name || '';
-          if (!name) return null;
-          return `${name} (×${s.count - 1})`;
-        })
-        .filter(Boolean);
+      const items = g.items.map(s => {
+        const name = s.label || `#${s.number}`;
+        return `#${s.number} ${name} ×${s.count - 1}`;
+      });
       if (items.length > 0) {
-        lines.push(`${g.title}:`);
-        lines.push(items.join(', '));
+        lines.push(g.title);
+        for (const item of items) lines.push(`  ${item}`);
         lines.push('');
       }
     }
-    lines.push('album26.app');
+    if (syncCode) {
+      lines.push(t('repes.share.intro'));
+      lines.push(`https://album26.app/?compare=${syncCode.replace('-', '')}`);
+    } else {
+      lines.push('https://album26.app');
+    }
     const text = lines.join('\n');
 
     const doCopy = () => {
-      navigator.clipboard.writeText(text).catch(() => {});
+      navigator.clipboard?.writeText(text).catch(() => {});
       setShareCopied(true);
       setTimeout(() => setShareCopied(false), 2000);
     };
@@ -3879,7 +3974,7 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
     } else {
       doCopy();
     }
-  }, [groups, totalRepes]);
+  }, [groups, totalRepes, syncCode, t]);
 
   return (
     <div className="px-4 pt-4 pb-8">
@@ -3976,6 +4071,145 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
 
 
 // =========================
+// COMPARE VIEW (friend's repes vs yours)
+// =========================
+function CompareView({ friendCode, friendData, counts, onStickerTap, onResultNavigate, onBack }) {
+  const { t, lang, countryName } = useLang();
+  const friendCounts = friendData?.counts || {};
+  const friendNames  = friendData?.names  || {};
+
+  const friendStickers = useMemo(
+    () => allStickers(friendCounts, friendNames, t, countryName),
+    [friendCounts, friendNames, lang, t, countryName]
+  );
+
+  const tradeOpps = useMemo(
+    () => friendStickers.filter(s => s.count > 1 && (counts[s.id] || 0) === 0),
+    [friendStickers, counts]
+  );
+  const sharedHave = useMemo(
+    () => friendStickers.filter(s => s.count > 1 && (counts[s.id] || 0) >= 1),
+    [friendStickers, counts]
+  );
+
+  function groupBySection(items) {
+    const m = new Map();
+    for (const s of items) {
+      if (!m.has(s.sectionTitle)) {
+        m.set(s.sectionTitle, { title: s.sectionTitle, sort: s.sectionSort, items: [] });
+      }
+      m.get(s.sectionTitle).items.push(s);
+    }
+    const arr = Array.from(m.values());
+    arr.sort((a, b) => a.sort - b.sort);
+    arr.forEach(g => g.items.sort((a, b) => a.number - b.number));
+    return arr;
+  }
+
+  const oppGroups = useMemo(() => groupBySection(tradeOpps), [tradeOpps]);
+  const haveGroups = useMemo(() => groupBySection(sharedHave), [sharedHave]);
+
+  const hasContent = tradeOpps.length > 0 || sharedHave.length > 0;
+
+  return (
+    <div className="px-4 pt-4 pb-8">
+      <button
+        onClick={onBack}
+        className="flex items-center gap-1 text-stone-500 active:text-stone-900 mb-3 -ml-1"
+      >
+        <ChevronLeft size={20} />
+        <span className="text-sm">{t('compare.back')}</span>
+      </button>
+
+      <div className="bg-white rounded-2xl panini-shadow p-4 relative overflow-hidden">
+        <div className="absolute -right-3 -top-3 text-7xl opacity-[0.08] select-none pointer-events-none">
+          🤝
+        </div>
+        <div className="relative">
+          <div className="font-mono-special text-[10px] tracking-[0.25em] text-rose-700">
+            {t('compare.code')} · {friendCode}
+          </div>
+          <div className="font-display text-2xl mt-1">{t('compare.title')}</div>
+          {hasContent && (
+            <div className="flex items-baseline gap-2 mt-2">
+              <div className="font-display text-4xl">{tradeOpps.length}</div>
+              <div className="text-sm text-stone-500">
+                {tradeOpps.length === 1 ? t('repes.distinct') : t('repes.distinctPlural')}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {!hasContent ? (
+        <div className="mt-10 text-center text-stone-500 px-6">
+          <div className="text-5xl mb-3">🤷</div>
+          <div className="font-display text-lg">{t('compare.empty.title')}</div>
+          <div className="text-sm text-stone-400 mt-2 leading-relaxed">
+            {t('compare.empty.sub')}
+          </div>
+        </div>
+      ) : (
+        <>
+          {oppGroups.length > 0 && (
+            <div className="mt-5">
+              <div className="px-1 mb-2">
+                <div className="font-mono-special text-[10px] tracking-widest text-emerald-700">
+                  {t('compare.opps.title')}
+                </div>
+                <div className="text-[11px] text-stone-500 mt-0.5">{t('compare.opps.sub')}</div>
+              </div>
+              <div className="space-y-4 mt-3">
+                {oppGroups.map(g => (
+                  <div key={g.title}>
+                    <div className="flex items-center justify-between px-1 mb-2">
+                      <div className="font-display text-sm uppercase tracking-wide text-stone-700">{g.title}</div>
+                      <div className="font-mono-special text-[10px] text-stone-400">{g.items.length}</div>
+                    </div>
+                    <div className="space-y-1.5">
+                      {g.items.map(s => (
+                        <ResultRow key={s.id} s={s} onTap={() => onResultNavigate(s.id)} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {haveGroups.length > 0 && (
+            <div className="mt-7 opacity-70">
+              <div className="px-1 mb-2">
+                <div className="font-mono-special text-[10px] tracking-widest text-stone-500">
+                  {t('compare.have.title')}
+                </div>
+                <div className="text-[11px] text-stone-400 mt-0.5">{t('compare.have.sub')}</div>
+              </div>
+              <div className="space-y-4 mt-3">
+                {haveGroups.map(g => (
+                  <div key={g.title}>
+                    <div className="flex items-center justify-between px-1 mb-2">
+                      <div className="font-display text-sm uppercase tracking-wide text-stone-600">{g.title}</div>
+                      <div className="font-mono-special text-[10px] text-stone-400">{g.items.length}</div>
+                    </div>
+                    <div className="space-y-1.5">
+                      {g.items.map(s => (
+                        <ResultRow key={s.id} s={s} onTap={() => onResultNavigate(s.id)} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
+// =========================
 // PAGE NAV (prev/next page in album order, used in TeamView and SimpleGridView)
 // =========================
 function pageLabels(p, t, countryName) {
@@ -4050,14 +4284,14 @@ function Header({ onBack, title, subtitle, accent }) {
 
 function ModeToggle({ mode, setMode }) {
   const { t } = useLang();
+  const activeCls = 'bg-stone-900 text-white dark:bg-stone-50 dark:!text-stone-900';
+  const inactiveCls = 'text-stone-600 hover:text-stone-900 dark:!text-stone-400 dark:hover:!text-stone-200';
   return (
     <div className="flex items-center gap-2 mt-4 bg-white rounded-2xl p-1 panini-shadow">
       <button
         onClick={() => setMode('add')}
         className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-          mode === 'add'
-            ? 'bg-stone-900 text-white'
-            : 'text-stone-600 hover:text-stone-900'
+          mode === 'add' ? activeCls : inactiveCls
         }`}
       >
         <Plus size={16} strokeWidth={2.5} />
@@ -4066,9 +4300,7 @@ function ModeToggle({ mode, setMode }) {
       <button
         onClick={() => setMode('sub')}
         className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-          mode === 'sub'
-            ? 'bg-stone-900 text-white'
-            : 'text-stone-600 hover:text-stone-900'
+          mode === 'sub' ? activeCls : inactiveCls
         }`}
       >
         <Minus size={16} strokeWidth={2.5} />
@@ -4078,7 +4310,7 @@ function ModeToggle({ mode, setMode }) {
   );
 }
 
-function Legend({ hasNames }) {
+function Legend() {
   const { t } = useLang();
   return (
     <div className="mt-6 text-[11px] text-stone-500 space-y-1.5 px-1">
@@ -4086,7 +4318,6 @@ function Legend({ hasNames }) {
       <div>• {t('legend.tap')}</div>
       <div>• {t('legend.swap.before')} <span className="font-medium">{t('mode.sub')}</span> {t('legend.swap.after')}</div>
       <div>• {t('legend.dupes')}</div>
-      {hasNames && <div>• {t('legend.editName.before')} <span className="font-medium">"{t('sticker.namePlaceholder')}"</span> {t('legend.editName.after')}</div>}
     </div>
   );
 }
