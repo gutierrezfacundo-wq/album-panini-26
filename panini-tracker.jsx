@@ -7,8 +7,8 @@ import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Spark
 const TEAMS_BY_GROUP = {
   A: [
     { code: 'MEX', name: 'México',         flag: '🇲🇽', color: '#006847', page: 8  },
-    { code: 'KOR', name: 'Corea del Sur',  flag: '🇰🇷', color: '#0F2A6E', page: 10 },
-    { code: 'RSA', name: 'Sudáfrica',      flag: '🇿🇦', color: '#007A4D', page: 12 },
+    { code: 'RSA', name: 'Sudáfrica',      flag: '🇿🇦', color: '#007A4D', page: 10 },
+    { code: 'KOR', name: 'Corea del Sur',  flag: '🇰🇷', color: '#0F2A6E', page: 12 },
     { code: 'CZE', name: 'Chequia',        flag: '🇨🇿', color: '#11457E', page: 14 },
   ],
   B: [
