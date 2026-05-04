@@ -951,29 +951,29 @@ const DEFAULT_NAMES = {
 
 
 const INTRO_INFO = [
-  { label: 'Logo Panini',        code: 'PANINI',   accent: '#0F0F12', flag: '' },
-  { label: 'Emblema oficial',    code: 'FIFA 26',  accent: '#E11D48', flag: '' },
-  { label: 'Emblema · variante', code: 'FIFA 26',  accent: '#9333EA', flag: '' },
-  { label: 'Mascotas oficiales', code: 'MASCOTAS', accent: '#0EA5E9', flag: '' },
-  { label: 'Eslogan oficial',    code: 'ESLOGAN',  accent: '#F59E0B', flag: '' },
-  { label: 'Pelota oficial',     code: 'PELOTA',   accent: '#10B981', flag: '⚽' },
-  { label: 'Sedes · Canadá',     code: 'CAN',      accent: '#D52B1E', flag: '🇨🇦' },
-  { label: 'Sedes · México',     code: 'MEX',      accent: '#006847', flag: '🇲🇽' },
-  { label: 'Sedes · EE.UU.',     code: 'USA',      accent: '#1B2C5C', flag: '🇺🇸' },
+  { labelKey: 'intro.logo',          code: 'PANINI',   accent: '#0F0F12', flag: '' },
+  { labelKey: 'intro.emblem',        code: 'FIFA 26',  accent: '#E11D48', flag: '' },
+  { labelKey: 'intro.emblemVariant', code: 'FIFA 26',  accent: '#9333EA', flag: '' },
+  { labelKey: 'intro.mascots',       code: 'MASCOTAS', accent: '#0EA5E9', flag: '' },
+  { labelKey: 'intro.slogan',        code: 'ESLOGAN',  accent: '#F59E0B', flag: '' },
+  { labelKey: 'intro.ball',          code: 'PELOTA',   accent: '#10B981', flag: '⚽' },
+  { labelKey: 'intro.host.canada',   code: 'CAN',      accent: '#D52B1E', flag: '🇨🇦' },
+  { labelKey: 'intro.host.mexico',   code: 'MEX',      accent: '#006847', flag: '🇲🇽' },
+  { labelKey: 'intro.host.usa',      code: 'USA',      accent: '#1B2C5C', flag: '🇺🇸' },
 ];
 
 const MUSEUM_INFO = [
-  { label: 'Italia 1934',       code: '1934', accent: '#0066CC', flag: '🇮🇹' },
-  { label: 'Uruguay 1950',      code: '1950', accent: '#0038A8', flag: '🇺🇾' },
-  { label: 'Alemania F. 1954',  code: '1954', accent: '#1A1A1A', flag: '🇩🇪' },
-  { label: 'Brasil 1962',       code: '1962', accent: '#FFCC29', flag: '🇧🇷' },
-  { label: 'Alemania F. 1974',  code: '1974', accent: '#1A1A1A', flag: '🇩🇪' },
-  { label: 'Argentina 1986',    code: '1986', accent: '#74ACDF', flag: '🇦🇷' },
-  { label: 'Brasil 1994',       code: '1994', accent: '#FFCC29', flag: '🇧🇷' },
-  { label: 'Brasil 2002',       code: '2002', accent: '#FFCC29', flag: '🇧🇷' },
-  { label: 'Italia 2006',       code: '2006', accent: '#0066CC', flag: '🇮🇹' },
-  { label: 'Alemania 2014',     code: '2014', accent: '#1A1A1A', flag: '🇩🇪' },
-  { label: 'Argentina 2022',    code: '2022', accent: '#74ACDF', flag: '🇦🇷' },
+  { labelKey: 'museum.italy1934',        code: '1934', accent: '#0066CC', flag: '🇮🇹' },
+  { labelKey: 'museum.uruguay1950',      code: '1950', accent: '#0038A8', flag: '🇺🇾' },
+  { labelKey: 'museum.westGermany1954',  code: '1954', accent: '#1A1A1A', flag: '🇩🇪' },
+  { labelKey: 'museum.brazil1962',       code: '1962', accent: '#FFCC29', flag: '🇧🇷' },
+  { labelKey: 'museum.westGermany1974',  code: '1974', accent: '#1A1A1A', flag: '🇩🇪' },
+  { labelKey: 'museum.argentina1986',    code: '1986', accent: '#74ACDF', flag: '🇦🇷' },
+  { labelKey: 'museum.brazil1994',       code: '1994', accent: '#FFCC29', flag: '🇧🇷' },
+  { labelKey: 'museum.brazil2002',       code: '2002', accent: '#FFCC29', flag: '🇧🇷' },
+  { labelKey: 'museum.italy2006',        code: '2006', accent: '#0066CC', flag: '🇮🇹' },
+  { labelKey: 'museum.germany2014',      code: '2014', accent: '#1A1A1A', flag: '🇩🇪' },
+  { labelKey: 'museum.argentina2022',    code: '2022', accent: '#74ACDF', flag: '🇦🇷' },
 ];
 
 const COCA_INFO = [
@@ -999,6 +999,646 @@ const TOTAL_BASE = INTRO_COUNT + MUSEUM_COUNT + 48 * STICKERS_PER_TEAM; // 980
 
 const STORAGE_KEY = 'panini26-counts-v2';
 const NAMES_KEY = 'panini26-names-v2';
+const LANG_KEY = 'panini26-lang-v1';
+
+// =========================
+// i18n
+// =========================
+const SUPPORTED_LANGS = ['es', 'en', 'fr', 'it', 'pt'];
+const DEFAULT_LANG = 'en';
+
+const LANG_INFO = {
+  es: { code: 'es', label: 'Español',    flag: '🇪🇸' },
+  en: { code: 'en', label: 'English',    flag: '🇬🇧' },
+  fr: { code: 'fr', label: 'Français',   flag: '🇫🇷' },
+  it: { code: 'it', label: 'Italiano',   flag: '🇮🇹' },
+  pt: { code: 'pt', label: 'Português',  flag: '🇧🇷' },
+};
+
+const T = {
+  es: {
+    'loading': 'CARGANDO ÁLBUM...',
+    'home.brand.album': 'ÁLBUM',
+    'home.brand.location': 'Mundial · USA · México · Canadá',
+    'home.reset.aria': 'Reiniciar',
+    'home.progress': 'PROGRESO',
+    'home.stats.collected': 'pegadas',
+    'home.stats.missing': 'faltan',
+    'home.stats.dupes': 'repes',
+    'home.action.search': 'Buscar',
+    'home.action.search.sub': 'por nombre o equipo',
+    'home.action.repes': 'Mis repes',
+    'home.action.repes.sub.has': 'para intercambiar',
+    'home.action.repes.sub.empty': 'todavía nada',
+    'home.sections': 'SECCIONES DEL ÁLBUM',
+    'home.autosave': 'SE GUARDA AUTOMÁTICAMENTE',
+    'section.intro.title': 'Introducción',
+    'section.intro.sub': 'Trofeo, mascota, estadios',
+    'section.teams.title': 'Equipos',
+    'section.teams.sub': '48 selecciones · 12 grupos',
+    'section.museum.title': 'Museo FIFA',
+    'section.museum.sub': 'Campeones de la historia',
+    'section.coca.title': 'Extras Coca-Cola',
+    'section.coca.sub': 'No cuentan en el 980',
+    'section.bonus.badge': 'BONUS',
+    'simplegrid.intro.sub': 'Logo, emblemas, mascotas, sedes',
+    'simplegrid.coca.sub': '12 stickers exclusivos',
+    'group': 'GRUPO',
+    'header.back': 'Volver',
+    'team.back': 'Equipos',
+    'team.weAre': 'WE ARE',
+    'team.complete': 'COMPLETO ✓',
+    'team.repe': 'repe',
+    'team.repesPlural': 'repes',
+    'team.repesPanel': 'REPES PARA INTERCAMBIAR',
+    'sticker.escudo': 'ESCUDO',
+    'sticker.equipo': 'EQUIPO',
+    'sticker.namePlaceholder': 'nombre',
+    'modal.figurita': 'FIGURITA',
+    'modal.placeholder': 'Nombre del jugador',
+    'modal.cancel': 'Cancelar',
+    'modal.save': 'Guardar',
+    'modal.lastFigurita': 'ÚLTIMA FIGURITA',
+    'modal.saveAndAdvance': 'GUARDA Y AVANZA AL SIGUIENTE',
+    'search.back': 'Inicio',
+    'search.placeholder': 'Nombre, país, código FIFA, número...',
+    'search.howTo': 'CÓMO BUSCAR',
+    'search.howTo.player': 'jugador',
+    'search.howTo.country': 'país',
+    'search.howTo.fifaCode': 'código FIFA',
+    'search.howTo.number': 'número',
+    'search.howTo.year': 'año (Museo)',
+    'search.howTo.byLabel': 'Por',
+    'search.empty.title': 'Sin resultados',
+    'search.empty.sub': 'Probá con otro nombre, país o código',
+    'search.result': 'RESULTADO',
+    'search.results': 'RESULTADOS',
+    'search.tapHint.add': 'TOCÁ UN RESULTADO PARA SUMAR',
+    'search.tapHint.sub': 'TOCÁ UN RESULTADO PARA RESTAR',
+    'result.noName': '(sin nombre)',
+    'result.missing': 'FALTA',
+    'repes.label': 'PARA INTERCAMBIAR',
+    'repes.title': 'Mis repes',
+    'repes.figRepeated': 'figurita repetida',
+    'repes.figRepeatedPlural': 'figuritas repetidas',
+    'repes.distinct': 'figurita distinta',
+    'repes.distinctPlural': 'figuritas distintas',
+    'repes.in': 'en',
+    'repes.ofStuck': 'sobre las pegadas',
+    'repes.empty.title': 'Todavía no tenés repes',
+    'repes.empty.sub': 'Cuando tengas una figurita más de una vez, va a aparecer acá para que la tengas a mano cuando intercambies.',
+    'repes.tapHint.add': 'TOCÁ PARA SUMAR · CAMBIÁ EL MODO ARRIBA',
+    'repes.tapHint.sub': 'TOCÁ PARA RESTAR · CAMBIÁ EL MODO ARRIBA',
+    'pageNav.prev': 'ANTERIOR',
+    'pageNav.next': 'SIGUIENTE',
+    'mode.add': 'Sumar',
+    'mode.sub': 'Restar',
+    'legend.title': 'CÓMO SE USA',
+    'legend.tap': 'Tocá una figurita para marcarla / sumarle',
+    'legend.swap.before': 'Cambiá a',
+    'legend.swap.after': 'para quitar repes',
+    'legend.dupes': 'El número amarillo indica cuántas repes tenés',
+    'legend.editName.before': 'Tocá',
+    'legend.editName.after': 'debajo del jugador para escribir cómo se llama',
+    'reset.title': '¿Borrar todo?',
+    'reset.body': 'Vas a perder todo tu progreso del álbum. Esta acción no se puede deshacer.',
+    'reset.cancel': 'Cancelar',
+    'reset.confirm': 'Borrar todo',
+    'lang.picker': 'Idioma',
+    'intro.logo': 'Logo Panini',
+    'intro.emblem': 'Emblema',
+    'intro.emblemVariant': 'Emblema · variante',
+    'intro.mascots': 'Mascotas',
+    'intro.slogan': 'Eslogan',
+    'intro.ball': 'Pelota',
+    'intro.host.canada': 'Sedes · Canadá',
+    'intro.host.mexico': 'Sedes · México',
+    'intro.host.usa': 'Sedes · EE.UU.',
+    'museum.italy1934': 'Italia 1934',
+    'museum.uruguay1950': 'Uruguay 1950',
+    'museum.westGermany1954': 'Alemania F. 1954',
+    'museum.brazil1962': 'Brasil 1962',
+    'museum.westGermany1974': 'Alemania F. 1974',
+    'museum.argentina1986': 'Argentina 1986',
+    'museum.brazil1994': 'Brasil 1994',
+    'museum.brazil2002': 'Brasil 2002',
+    'museum.italy2006': 'Italia 2006',
+    'museum.germany2014': 'Alemania 2014',
+    'museum.argentina2022': 'Argentina 2022',
+  },
+  en: {
+    'loading': 'LOADING ALBUM...',
+    'home.brand.album': 'ALBUM',
+    'home.brand.location': 'World Cup · USA · Mexico · Canada',
+    'home.reset.aria': 'Reset',
+    'home.progress': 'PROGRESS',
+    'home.stats.collected': 'stuck',
+    'home.stats.missing': 'missing',
+    'home.stats.dupes': 'dupes',
+    'home.action.search': 'Search',
+    'home.action.search.sub': 'by name or team',
+    'home.action.repes': 'My dupes',
+    'home.action.repes.sub.has': 'to trade',
+    'home.action.repes.sub.empty': 'none yet',
+    'home.sections': 'ALBUM SECTIONS',
+    'home.autosave': 'AUTO-SAVED',
+    'section.intro.title': 'Introduction',
+    'section.intro.sub': 'Trophy, mascot, stadiums',
+    'section.teams.title': 'Teams',
+    'section.teams.sub': '48 nations · 12 groups',
+    'section.museum.title': 'FIFA Museum',
+    'section.museum.sub': 'Champions through history',
+    'section.coca.title': 'Coca-Cola Extras',
+    'section.coca.sub': 'Not counted in the 980',
+    'section.bonus.badge': 'BONUS',
+    'simplegrid.intro.sub': 'Logo, emblems, mascots, hosts',
+    'simplegrid.coca.sub': '12 exclusive stickers',
+    'group': 'GROUP',
+    'header.back': 'Back',
+    'team.back': 'Teams',
+    'team.weAre': 'WE ARE',
+    'team.complete': 'COMPLETE ✓',
+    'team.repe': 'dupe',
+    'team.repesPlural': 'dupes',
+    'team.repesPanel': 'DUPES TO TRADE',
+    'sticker.escudo': 'CREST',
+    'sticker.equipo': 'TEAM',
+    'sticker.namePlaceholder': 'name',
+    'modal.figurita': 'STICKER',
+    'modal.placeholder': 'Player name',
+    'modal.cancel': 'Cancel',
+    'modal.save': 'Save',
+    'modal.lastFigurita': 'LAST STICKER',
+    'modal.saveAndAdvance': 'SAVE AND CONTINUE',
+    'search.back': 'Home',
+    'search.placeholder': 'Name, country, FIFA code, number...',
+    'search.howTo': 'HOW TO SEARCH',
+    'search.howTo.player': 'player',
+    'search.howTo.country': 'country',
+    'search.howTo.fifaCode': 'FIFA code',
+    'search.howTo.number': 'number',
+    'search.howTo.year': 'year (Museum)',
+    'search.howTo.byLabel': 'By',
+    'search.empty.title': 'No results',
+    'search.empty.sub': 'Try another name, country or code',
+    'search.result': 'RESULT',
+    'search.results': 'RESULTS',
+    'search.tapHint.add': 'TAP A RESULT TO ADD',
+    'search.tapHint.sub': 'TAP A RESULT TO SUBTRACT',
+    'result.noName': '(no name)',
+    'result.missing': 'MISSING',
+    'repes.label': 'TO TRADE',
+    'repes.title': 'My dupes',
+    'repes.figRepeated': 'duplicate sticker',
+    'repes.figRepeatedPlural': 'duplicate stickers',
+    'repes.distinct': 'distinct sticker',
+    'repes.distinctPlural': 'distinct stickers',
+    'repes.in': 'across',
+    'repes.ofStuck': 'of stuck stickers',
+    'repes.empty.title': 'No dupes yet',
+    'repes.empty.sub': 'When you have a sticker more than once, it will show up here so you can keep track when trading.',
+    'repes.tapHint.add': 'TAP TO ADD · SWITCH MODE ABOVE',
+    'repes.tapHint.sub': 'TAP TO SUBTRACT · SWITCH MODE ABOVE',
+    'pageNav.prev': 'PREVIOUS',
+    'pageNav.next': 'NEXT',
+    'mode.add': 'Add',
+    'mode.sub': 'Subtract',
+    'legend.title': 'HOW TO USE',
+    'legend.tap': 'Tap a sticker to mark / increment it',
+    'legend.swap.before': 'Switch to',
+    'legend.swap.after': 'to remove dupes',
+    'legend.dupes': 'The yellow number shows how many dupes you have',
+    'legend.editName.before': 'Tap',
+    'legend.editName.after': 'below a player to write their name',
+    'reset.title': 'Delete everything?',
+    'reset.body': 'You will lose all your album progress. This cannot be undone.',
+    'reset.cancel': 'Cancel',
+    'reset.confirm': 'Delete all',
+    'lang.picker': 'Language',
+    'intro.logo': 'Panini Logo',
+    'intro.emblem': 'Emblem',
+    'intro.emblemVariant': 'Emblem · variant',
+    'intro.mascots': 'Mascots',
+    'intro.slogan': 'Slogan',
+    'intro.ball': 'Match Ball',
+    'intro.host.canada': 'Hosts · Canada',
+    'intro.host.mexico': 'Hosts · Mexico',
+    'intro.host.usa': 'Hosts · USA',
+    'museum.italy1934': 'Italy 1934',
+    'museum.uruguay1950': 'Uruguay 1950',
+    'museum.westGermany1954': 'West Germany 1954',
+    'museum.brazil1962': 'Brazil 1962',
+    'museum.westGermany1974': 'West Germany 1974',
+    'museum.argentina1986': 'Argentina 1986',
+    'museum.brazil1994': 'Brazil 1994',
+    'museum.brazil2002': 'Brazil 2002',
+    'museum.italy2006': 'Italy 2006',
+    'museum.germany2014': 'Germany 2014',
+    'museum.argentina2022': 'Argentina 2022',
+  },
+  fr: {
+    'loading': 'CHARGEMENT...',
+    'home.brand.album': 'ALBUM',
+    'home.brand.location': 'Coupe du Monde · USA · Mexique · Canada',
+    'home.reset.aria': 'Réinitialiser',
+    'home.progress': 'PROGRESSION',
+    'home.stats.collected': 'collées',
+    'home.stats.missing': 'manquantes',
+    'home.stats.dupes': 'doubles',
+    'home.action.search': 'Rechercher',
+    'home.action.search.sub': 'par nom ou équipe',
+    'home.action.repes': 'Mes doubles',
+    'home.action.repes.sub.has': 'à échanger',
+    'home.action.repes.sub.empty': 'aucun pour l\'instant',
+    'home.sections': 'SECTIONS DE L\'ALBUM',
+    'home.autosave': 'SAUVEGARDE AUTOMATIQUE',
+    'section.intro.title': 'Introduction',
+    'section.intro.sub': 'Trophée, mascotte, stades',
+    'section.teams.title': 'Équipes',
+    'section.teams.sub': '48 nations · 12 groupes',
+    'section.museum.title': 'Musée FIFA',
+    'section.museum.sub': 'Champions de l\'histoire',
+    'section.coca.title': 'Extras Coca-Cola',
+    'section.coca.sub': 'Pas comptées dans les 980',
+    'section.bonus.badge': 'BONUS',
+    'simplegrid.intro.sub': 'Logo, emblèmes, mascottes, sites',
+    'simplegrid.coca.sub': '12 vignettes exclusives',
+    'group': 'GROUPE',
+    'header.back': 'Retour',
+    'team.back': 'Équipes',
+    'team.weAre': 'WE ARE',
+    'team.complete': 'COMPLÈTE ✓',
+    'team.repe': 'double',
+    'team.repesPlural': 'doubles',
+    'team.repesPanel': 'DOUBLES À ÉCHANGER',
+    'sticker.escudo': 'ÉCUSSON',
+    'sticker.equipo': 'ÉQUIPE',
+    'sticker.namePlaceholder': 'nom',
+    'modal.figurita': 'VIGNETTE',
+    'modal.placeholder': 'Nom du joueur',
+    'modal.cancel': 'Annuler',
+    'modal.save': 'Enregistrer',
+    'modal.lastFigurita': 'DERNIÈRE VIGNETTE',
+    'modal.saveAndAdvance': 'ENREGISTRER ET CONTINUER',
+    'search.back': 'Accueil',
+    'search.placeholder': 'Nom, pays, code FIFA, numéro...',
+    'search.howTo': 'COMMENT CHERCHER',
+    'search.howTo.player': 'joueur',
+    'search.howTo.country': 'pays',
+    'search.howTo.fifaCode': 'code FIFA',
+    'search.howTo.number': 'numéro',
+    'search.howTo.year': 'année (Musée)',
+    'search.howTo.byLabel': 'Par',
+    'search.empty.title': 'Aucun résultat',
+    'search.empty.sub': 'Essayez un autre nom, pays ou code',
+    'search.result': 'RÉSULTAT',
+    'search.results': 'RÉSULTATS',
+    'search.tapHint.add': 'TOUCHEZ UN RÉSULTAT POUR AJOUTER',
+    'search.tapHint.sub': 'TOUCHEZ UN RÉSULTAT POUR SOUSTRAIRE',
+    'result.noName': '(sans nom)',
+    'result.missing': 'MANQUE',
+    'repes.label': 'À ÉCHANGER',
+    'repes.title': 'Mes doubles',
+    'repes.figRepeated': 'vignette en double',
+    'repes.figRepeatedPlural': 'vignettes en double',
+    'repes.distinct': 'vignette différente',
+    'repes.distinctPlural': 'vignettes différentes',
+    'repes.in': 'sur',
+    'repes.ofStuck': 'sur les vignettes collées',
+    'repes.empty.title': 'Pas encore de doubles',
+    'repes.empty.sub': 'Quand vous aurez une vignette plus d\'une fois, elle apparaîtra ici pour faciliter vos échanges.',
+    'repes.tapHint.add': 'TOUCHEZ POUR AJOUTER · CHANGEZ DE MODE EN HAUT',
+    'repes.tapHint.sub': 'TOUCHEZ POUR SOUSTRAIRE · CHANGEZ DE MODE EN HAUT',
+    'pageNav.prev': 'PRÉCÉDENT',
+    'pageNav.next': 'SUIVANT',
+    'mode.add': 'Ajouter',
+    'mode.sub': 'Soustraire',
+    'legend.title': 'COMMENT UTILISER',
+    'legend.tap': 'Touchez une vignette pour la marquer / l\'incrémenter',
+    'legend.swap.before': 'Passez en',
+    'legend.swap.after': 'pour retirer les doubles',
+    'legend.dupes': 'Le numéro jaune indique le nombre de doubles',
+    'legend.editName.before': 'Touchez',
+    'legend.editName.after': 'sous le joueur pour écrire son nom',
+    'reset.title': 'Tout effacer ?',
+    'reset.body': 'Vous allez perdre toute votre progression. Cette action est irréversible.',
+    'reset.cancel': 'Annuler',
+    'reset.confirm': 'Tout effacer',
+    'lang.picker': 'Langue',
+    'intro.logo': 'Logo Panini',
+    'intro.emblem': 'Emblème',
+    'intro.emblemVariant': 'Emblème · variante',
+    'intro.mascots': 'Mascottes',
+    'intro.slogan': 'Slogan',
+    'intro.ball': 'Ballon officiel',
+    'intro.host.canada': 'Hôtes · Canada',
+    'intro.host.mexico': 'Hôtes · Mexique',
+    'intro.host.usa': 'Hôtes · États-Unis',
+    'museum.italy1934': 'Italie 1934',
+    'museum.uruguay1950': 'Uruguay 1950',
+    'museum.westGermany1954': 'RFA 1954',
+    'museum.brazil1962': 'Brésil 1962',
+    'museum.westGermany1974': 'RFA 1974',
+    'museum.argentina1986': 'Argentine 1986',
+    'museum.brazil1994': 'Brésil 1994',
+    'museum.brazil2002': 'Brésil 2002',
+    'museum.italy2006': 'Italie 2006',
+    'museum.germany2014': 'Allemagne 2014',
+    'museum.argentina2022': 'Argentine 2022',
+  },
+  it: {
+    'loading': 'CARICAMENTO ALBUM...',
+    'home.brand.album': 'ALBUM',
+    'home.brand.location': 'Mondiali · USA · Messico · Canada',
+    'home.reset.aria': 'Reimposta',
+    'home.progress': 'PROGRESSO',
+    'home.stats.collected': 'attaccate',
+    'home.stats.missing': 'mancanti',
+    'home.stats.dupes': 'doppioni',
+    'home.action.search': 'Cerca',
+    'home.action.search.sub': 'per nome o squadra',
+    'home.action.repes': 'I miei doppioni',
+    'home.action.repes.sub.has': 'da scambiare',
+    'home.action.repes.sub.empty': 'ancora niente',
+    'home.sections': 'SEZIONI DELL\'ALBUM',
+    'home.autosave': 'SALVATAGGIO AUTOMATICO',
+    'section.intro.title': 'Introduzione',
+    'section.intro.sub': 'Trofeo, mascotte, stadi',
+    'section.teams.title': 'Squadre',
+    'section.teams.sub': '48 nazionali · 12 gironi',
+    'section.museum.title': 'Museo FIFA',
+    'section.museum.sub': 'Campioni della storia',
+    'section.coca.title': 'Extra Coca-Cola',
+    'section.coca.sub': 'Non contano nelle 980',
+    'section.bonus.badge': 'BONUS',
+    'simplegrid.intro.sub': 'Logo, emblemi, mascotte, sedi',
+    'simplegrid.coca.sub': '12 figurine esclusive',
+    'group': 'GIRONE',
+    'header.back': 'Indietro',
+    'team.back': 'Squadre',
+    'team.weAre': 'WE ARE',
+    'team.complete': 'COMPLETA ✓',
+    'team.repe': 'doppione',
+    'team.repesPlural': 'doppioni',
+    'team.repesPanel': 'DOPPIONI DA SCAMBIARE',
+    'sticker.escudo': 'STEMMA',
+    'sticker.equipo': 'SQUADRA',
+    'sticker.namePlaceholder': 'nome',
+    'modal.figurita': 'FIGURINA',
+    'modal.placeholder': 'Nome del giocatore',
+    'modal.cancel': 'Annulla',
+    'modal.save': 'Salva',
+    'modal.lastFigurita': 'ULTIMA FIGURINA',
+    'modal.saveAndAdvance': 'SALVA E AVANZA',
+    'search.back': 'Home',
+    'search.placeholder': 'Nome, paese, codice FIFA, numero...',
+    'search.howTo': 'COME CERCARE',
+    'search.howTo.player': 'giocatore',
+    'search.howTo.country': 'paese',
+    'search.howTo.fifaCode': 'codice FIFA',
+    'search.howTo.number': 'numero',
+    'search.howTo.year': 'anno (Museo)',
+    'search.howTo.byLabel': 'Per',
+    'search.empty.title': 'Nessun risultato',
+    'search.empty.sub': 'Prova con un altro nome, paese o codice',
+    'search.result': 'RISULTATO',
+    'search.results': 'RISULTATI',
+    'search.tapHint.add': 'TOCCA UN RISULTATO PER AGGIUNGERE',
+    'search.tapHint.sub': 'TOCCA UN RISULTATO PER SOTTRARRE',
+    'result.noName': '(senza nome)',
+    'result.missing': 'MANCA',
+    'repes.label': 'DA SCAMBIARE',
+    'repes.title': 'I miei doppioni',
+    'repes.figRepeated': 'figurina doppia',
+    'repes.figRepeatedPlural': 'figurine doppie',
+    'repes.distinct': 'figurina diversa',
+    'repes.distinctPlural': 'figurine diverse',
+    'repes.in': 'su',
+    'repes.ofStuck': 'sulle figurine attaccate',
+    'repes.empty.title': 'Ancora nessun doppione',
+    'repes.empty.sub': 'Quando avrai una figurina più di una volta, comparirà qui per averla a portata di mano per gli scambi.',
+    'repes.tapHint.add': 'TOCCA PER AGGIUNGERE · CAMBIA MODO IN ALTO',
+    'repes.tapHint.sub': 'TOCCA PER SOTTRARRE · CAMBIA MODO IN ALTO',
+    'pageNav.prev': 'PRECEDENTE',
+    'pageNav.next': 'SUCCESSIVO',
+    'mode.add': 'Aggiungi',
+    'mode.sub': 'Sottrai',
+    'legend.title': 'COME SI USA',
+    'legend.tap': 'Tocca una figurina per segnarla / aggiungerla',
+    'legend.swap.before': 'Passa a',
+    'legend.swap.after': 'per togliere doppioni',
+    'legend.dupes': 'Il numero giallo indica quanti doppioni hai',
+    'legend.editName.before': 'Tocca',
+    'legend.editName.after': 'sotto il giocatore per scrivere come si chiama',
+    'reset.title': 'Cancellare tutto?',
+    'reset.body': 'Perderai tutti i progressi dell\'album. Questa azione non è reversibile.',
+    'reset.cancel': 'Annulla',
+    'reset.confirm': 'Cancella tutto',
+    'lang.picker': 'Lingua',
+    'intro.logo': 'Logo Panini',
+    'intro.emblem': 'Emblema',
+    'intro.emblemVariant': 'Emblema · variante',
+    'intro.mascots': 'Mascotte',
+    'intro.slogan': 'Slogan',
+    'intro.ball': 'Pallone ufficiale',
+    'intro.host.canada': 'Sedi · Canada',
+    'intro.host.mexico': 'Sedi · Messico',
+    'intro.host.usa': 'Sedi · USA',
+    'museum.italy1934': 'Italia 1934',
+    'museum.uruguay1950': 'Uruguay 1950',
+    'museum.westGermany1954': 'Germania O. 1954',
+    'museum.brazil1962': 'Brasile 1962',
+    'museum.westGermany1974': 'Germania O. 1974',
+    'museum.argentina1986': 'Argentina 1986',
+    'museum.brazil1994': 'Brasile 1994',
+    'museum.brazil2002': 'Brasile 2002',
+    'museum.italy2006': 'Italia 2006',
+    'museum.germany2014': 'Germania 2014',
+    'museum.argentina2022': 'Argentina 2022',
+  },
+  pt: {
+    'loading': 'CARREGANDO ÁLBUM...',
+    'home.brand.album': 'ÁLBUM',
+    'home.brand.location': 'Copa do Mundo · EUA · México · Canadá',
+    'home.reset.aria': 'Reiniciar',
+    'home.progress': 'PROGRESSO',
+    'home.stats.collected': 'coladas',
+    'home.stats.missing': 'faltam',
+    'home.stats.dupes': 'repetidas',
+    'home.action.search': 'Buscar',
+    'home.action.search.sub': 'por nome ou seleção',
+    'home.action.repes': 'Minhas repetidas',
+    'home.action.repes.sub.has': 'para trocar',
+    'home.action.repes.sub.empty': 'ainda nada',
+    'home.sections': 'SEÇÕES DO ÁLBUM',
+    'home.autosave': 'SALVO AUTOMATICAMENTE',
+    'section.intro.title': 'Introdução',
+    'section.intro.sub': 'Troféu, mascote, estádios',
+    'section.teams.title': 'Seleções',
+    'section.teams.sub': '48 seleções · 12 grupos',
+    'section.museum.title': 'Museu FIFA',
+    'section.museum.sub': 'Campeões da história',
+    'section.coca.title': 'Extras Coca-Cola',
+    'section.coca.sub': 'Não contam nas 980',
+    'section.bonus.badge': 'BÔNUS',
+    'simplegrid.intro.sub': 'Logo, emblemas, mascotes, sedes',
+    'simplegrid.coca.sub': '12 figurinhas exclusivas',
+    'group': 'GRUPO',
+    'header.back': 'Voltar',
+    'team.back': 'Seleções',
+    'team.weAre': 'WE ARE',
+    'team.complete': 'COMPLETO ✓',
+    'team.repe': 'repetida',
+    'team.repesPlural': 'repetidas',
+    'team.repesPanel': 'REPETIDAS PARA TROCAR',
+    'sticker.escudo': 'ESCUDO',
+    'sticker.equipo': 'EQUIPE',
+    'sticker.namePlaceholder': 'nome',
+    'modal.figurita': 'FIGURINHA',
+    'modal.placeholder': 'Nome do jogador',
+    'modal.cancel': 'Cancelar',
+    'modal.save': 'Salvar',
+    'modal.lastFigurita': 'ÚLTIMA FIGURINHA',
+    'modal.saveAndAdvance': 'SALVAR E AVANÇAR',
+    'search.back': 'Início',
+    'search.placeholder': 'Nome, país, código FIFA, número...',
+    'search.howTo': 'COMO BUSCAR',
+    'search.howTo.player': 'jogador',
+    'search.howTo.country': 'país',
+    'search.howTo.fifaCode': 'código FIFA',
+    'search.howTo.number': 'número',
+    'search.howTo.year': 'ano (Museu)',
+    'search.howTo.byLabel': 'Por',
+    'search.empty.title': 'Sem resultados',
+    'search.empty.sub': 'Tente outro nome, país ou código',
+    'search.result': 'RESULTADO',
+    'search.results': 'RESULTADOS',
+    'search.tapHint.add': 'TOQUE NUM RESULTADO PARA SOMAR',
+    'search.tapHint.sub': 'TOQUE NUM RESULTADO PARA SUBTRAIR',
+    'result.noName': '(sem nome)',
+    'result.missing': 'FALTA',
+    'repes.label': 'PARA TROCAR',
+    'repes.title': 'Minhas repetidas',
+    'repes.figRepeated': 'figurinha repetida',
+    'repes.figRepeatedPlural': 'figurinhas repetidas',
+    'repes.distinct': 'figurinha distinta',
+    'repes.distinctPlural': 'figurinhas distintas',
+    'repes.in': 'em',
+    'repes.ofStuck': 'sobre as coladas',
+    'repes.empty.title': 'Ainda não tem repetidas',
+    'repes.empty.sub': 'Quando tiver uma figurinha mais de uma vez, ela vai aparecer aqui para você ter à mão na hora da troca.',
+    'repes.tapHint.add': 'TOQUE PARA SOMAR · MUDE O MODO ACIMA',
+    'repes.tapHint.sub': 'TOQUE PARA SUBTRAIR · MUDE O MODO ACIMA',
+    'pageNav.prev': 'ANTERIOR',
+    'pageNav.next': 'SEGUINTE',
+    'mode.add': 'Somar',
+    'mode.sub': 'Subtrair',
+    'legend.title': 'COMO USAR',
+    'legend.tap': 'Toque uma figurinha para marcá-la / somar',
+    'legend.swap.before': 'Mude para',
+    'legend.swap.after': 'para tirar repetidas',
+    'legend.dupes': 'O número amarelo indica quantas repetidas você tem',
+    'legend.editName.before': 'Toque',
+    'legend.editName.after': 'embaixo do jogador para escrever o nome dele',
+    'reset.title': 'Apagar tudo?',
+    'reset.body': 'Você vai perder todo o seu progresso do álbum. Esta ação não pode ser desfeita.',
+    'reset.cancel': 'Cancelar',
+    'reset.confirm': 'Apagar tudo',
+    'lang.picker': 'Idioma',
+    'intro.logo': 'Logo Panini',
+    'intro.emblem': 'Emblema',
+    'intro.emblemVariant': 'Emblema · variante',
+    'intro.mascots': 'Mascotes',
+    'intro.slogan': 'Slogan',
+    'intro.ball': 'Bola oficial',
+    'intro.host.canada': 'Sedes · Canadá',
+    'intro.host.mexico': 'Sedes · México',
+    'intro.host.usa': 'Sedes · EUA',
+    'museum.italy1934': 'Itália 1934',
+    'museum.uruguay1950': 'Uruguai 1950',
+    'museum.westGermany1954': 'Alemanha Oc. 1954',
+    'museum.brazil1962': 'Brasil 1962',
+    'museum.westGermany1974': 'Alemanha Oc. 1974',
+    'museum.argentina1986': 'Argentina 1986',
+    'museum.brazil1994': 'Brasil 1994',
+    'museum.brazil2002': 'Brasil 2002',
+    'museum.italy2006': 'Itália 2006',
+    'museum.germany2014': 'Alemanha 2014',
+    'museum.argentina2022': 'Argentina 2022',
+  },
+};
+
+const COUNTRY_NAMES = {
+  ALG: { es: 'Argelia',         en: 'Algeria',           fr: 'Algérie',           it: 'Algeria',          pt: 'Argélia' },
+  ARG: { es: 'Argentina',       en: 'Argentina',         fr: 'Argentine',         it: 'Argentina',        pt: 'Argentina' },
+  AUS: { es: 'Australia',       en: 'Australia',         fr: 'Australie',         it: 'Australia',        pt: 'Austrália' },
+  AUT: { es: 'Austria',         en: 'Austria',           fr: 'Autriche',          it: 'Austria',          pt: 'Áustria' },
+  BEL: { es: 'Bélgica',         en: 'Belgium',           fr: 'Belgique',          it: 'Belgio',           pt: 'Bélgica' },
+  BIH: { es: 'Bosnia y Herz.',  en: 'Bosnia & Herz.',    fr: 'Bosnie-Herz.',      it: 'Bosnia Erz.',      pt: 'Bósnia & Herz.' },
+  BRA: { es: 'Brasil',          en: 'Brazil',            fr: 'Brésil',            it: 'Brasile',          pt: 'Brasil' },
+  CAN: { es: 'Canadá',          en: 'Canada',            fr: 'Canada',            it: 'Canada',           pt: 'Canadá' },
+  CIV: { es: 'Costa de Marfil', en: 'Ivory Coast',       fr: 'Côte d\'Ivoire',    it: 'Costa d\'Avorio',  pt: 'Costa do Marfim' },
+  COD: { es: 'RD Congo',        en: 'DR Congo',          fr: 'RD Congo',          it: 'RD Congo',         pt: 'RD Congo' },
+  COL: { es: 'Colombia',        en: 'Colombia',          fr: 'Colombie',          it: 'Colombia',         pt: 'Colômbia' },
+  CPV: { es: 'Cabo Verde',      en: 'Cape Verde',        fr: 'Cap-Vert',          it: 'Capo Verde',       pt: 'Cabo Verde' },
+  CRO: { es: 'Croacia',         en: 'Croatia',           fr: 'Croatie',           it: 'Croazia',          pt: 'Croácia' },
+  CUW: { es: 'Curazao',         en: 'Curaçao',           fr: 'Curaçao',           it: 'Curaçao',          pt: 'Curaçao' },
+  CZE: { es: 'Chequia',         en: 'Czechia',           fr: 'Tchéquie',          it: 'Cechia',           pt: 'Chéquia' },
+  ECU: { es: 'Ecuador',         en: 'Ecuador',           fr: 'Équateur',          it: 'Ecuador',          pt: 'Equador' },
+  EGY: { es: 'Egipto',          en: 'Egypt',             fr: 'Égypte',            it: 'Egitto',           pt: 'Egito' },
+  ENG: { es: 'Inglaterra',      en: 'England',           fr: 'Angleterre',        it: 'Inghilterra',      pt: 'Inglaterra' },
+  ESP: { es: 'España',          en: 'Spain',             fr: 'Espagne',           it: 'Spagna',           pt: 'Espanha' },
+  FRA: { es: 'Francia',         en: 'France',            fr: 'France',            it: 'Francia',          pt: 'França' },
+  GER: { es: 'Alemania',        en: 'Germany',           fr: 'Allemagne',         it: 'Germania',         pt: 'Alemanha' },
+  GHA: { es: 'Ghana',           en: 'Ghana',             fr: 'Ghana',             it: 'Ghana',            pt: 'Gana' },
+  HAI: { es: 'Haití',           en: 'Haiti',             fr: 'Haïti',             it: 'Haiti',            pt: 'Haiti' },
+  IRN: { es: 'Irán',            en: 'Iran',              fr: 'Iran',              it: 'Iran',             pt: 'Irã' },
+  IRQ: { es: 'Irak',            en: 'Iraq',              fr: 'Irak',              it: 'Iraq',             pt: 'Iraque' },
+  JOR: { es: 'Jordania',        en: 'Jordan',            fr: 'Jordanie',          it: 'Giordania',        pt: 'Jordânia' },
+  JPN: { es: 'Japón',           en: 'Japan',             fr: 'Japon',             it: 'Giappone',         pt: 'Japão' },
+  KOR: { es: 'Corea del Sur',   en: 'South Korea',       fr: 'Corée du Sud',      it: 'Corea del Sud',    pt: 'Coreia do Sul' },
+  KSA: { es: 'Arabia Saudita',  en: 'Saudi Arabia',      fr: 'Arabie saoudite',   it: 'Arabia Saudita',   pt: 'Arábia Saudita' },
+  MAR: { es: 'Marruecos',       en: 'Morocco',           fr: 'Maroc',             it: 'Marocco',          pt: 'Marrocos' },
+  MEX: { es: 'México',          en: 'Mexico',            fr: 'Mexique',           it: 'Messico',          pt: 'México' },
+  NED: { es: 'Países Bajos',    en: 'Netherlands',       fr: 'Pays-Bas',          it: 'Paesi Bassi',      pt: 'Países Baixos' },
+  NOR: { es: 'Noruega',         en: 'Norway',            fr: 'Norvège',           it: 'Norvegia',         pt: 'Noruega' },
+  NZL: { es: 'Nueva Zelanda',   en: 'New Zealand',       fr: 'Nouvelle-Zélande',  it: 'Nuova Zelanda',    pt: 'Nova Zelândia' },
+  PAN: { es: 'Panamá',          en: 'Panama',            fr: 'Panama',            it: 'Panama',           pt: 'Panamá' },
+  PAR: { es: 'Paraguay',        en: 'Paraguay',          fr: 'Paraguay',          it: 'Paraguay',         pt: 'Paraguai' },
+  POR: { es: 'Portugal',        en: 'Portugal',          fr: 'Portugal',          it: 'Portogallo',       pt: 'Portugal' },
+  QAT: { es: 'Catar',           en: 'Qatar',             fr: 'Qatar',             it: 'Qatar',            pt: 'Catar' },
+  RSA: { es: 'Sudáfrica',       en: 'South Africa',      fr: 'Afrique du Sud',    it: 'Sudafrica',        pt: 'África do Sul' },
+  SCO: { es: 'Escocia',         en: 'Scotland',          fr: 'Écosse',            it: 'Scozia',           pt: 'Escócia' },
+  SEN: { es: 'Senegal',         en: 'Senegal',           fr: 'Sénégal',           it: 'Senegal',          pt: 'Senegal' },
+  SUI: { es: 'Suiza',           en: 'Switzerland',       fr: 'Suisse',            it: 'Svizzera',         pt: 'Suíça' },
+  SWE: { es: 'Suecia',          en: 'Sweden',            fr: 'Suède',             it: 'Svezia',           pt: 'Suécia' },
+  TUN: { es: 'Túnez',           en: 'Tunisia',           fr: 'Tunisie',           it: 'Tunisia',          pt: 'Tunísia' },
+  TUR: { es: 'Turquía',         en: 'Türkiye',           fr: 'Turquie',           it: 'Turchia',          pt: 'Turquia' },
+  URU: { es: 'Uruguay',         en: 'Uruguay',           fr: 'Uruguay',           it: 'Uruguay',          pt: 'Uruguai' },
+  USA: { es: 'EE.UU.',          en: 'USA',               fr: 'États-Unis',        it: 'USA',              pt: 'EUA' },
+  UZB: { es: 'Uzbekistán',      en: 'Uzbekistan',        fr: 'Ouzbékistan',       it: 'Uzbekistan',       pt: 'Uzbequistão' },
+};
+
+function detectLang() {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved && SUPPORTED_LANGS.includes(saved)) return saved;
+  } catch (e) {}
+  if (typeof navigator === 'undefined') return DEFAULT_LANG;
+  const navLang = (navigator.language || 'en').slice(0, 2).toLowerCase();
+  return SUPPORTED_LANGS.includes(navLang) ? navLang : DEFAULT_LANG;
+}
+
+const LangContext = React.createContext({
+  lang: DEFAULT_LANG,
+  setLang: () => {},
+  t: (k) => k,
+  countryName: (code) => code,
+});
+
+function useLang() {
+  return React.useContext(LangContext);
+}
 
 // Lookup all teams flat
 const ALL_TEAMS = GROUPS.flatMap(g => TEAMS_BY_GROUP[g].map(t => ({ ...t, group: g })));
@@ -1008,15 +1648,14 @@ const TEAM_BY_CODE = Object.fromEntries(ALL_TEAMS.map(t => [t.code, t]));
 // ALBUM PAGE ORDER (for prev/next page navigation)
 // =========================
 const ALL_PAGES = [
-  { type: 'simple', section: 'INTRO', label: 'Introducción', subtitle: 'Álbum · pág. 1' },
-  ...ALL_TEAMS.map((t, i) => ({
+  { type: 'simple', section: 'INTRO', labelKey: 'section.intro.title', subtitleKey: 'pageNav.album' },
+  ...ALL_TEAMS.map((t) => ({
     type: 'team',
     code: t.code,
-    label: t.name,
-    subtitle: `Grupo ${t.group}`,
+    group: t.group,
   })),
-  { type: 'simple', section: 'MUSEUM', label: 'Museo FIFA', subtitle: 'Campeones' },
-  { type: 'simple', section: 'COCA',   label: 'Extras Coca-Cola', subtitle: 'Bonus' },
+  { type: 'simple', section: 'MUSEUM', labelKey: 'section.museum.title' },
+  { type: 'simple', section: 'COCA',   labelKey: 'section.coca.title', subtitleKey: 'section.bonus.badge' },
 ];
 
 function pageIndexOf(view) {
@@ -1074,65 +1713,74 @@ function normalize(s) {
   return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-function allStickers(counts, names) {
+function allStickers(counts, names, t, countryName) {
   const out = [];
+  const introTitle  = t('section.intro.title');
+  const museumTitle = t('section.museum.title');
+  const cocaTitle   = t('section.coca.title');
+  const groupWord   = t('group');
   // Introducción
   INTRO_INFO.forEach((info, i) => {
     const id = `INTRO-${i + 1}`;
+    const label = t(info.labelKey);
     out.push({
       id,
       key: 'intro',
-      sectionTitle: 'Introducción',
+      sectionTitle: introTitle,
       sectionSort: 0,
       number: i + 1,
-      label: info.label,
+      label,
       flag: info.flag,
       code: info.code,
       accent: info.accent,
       count: counts[id] || 0,
-      searchable: normalize(`${info.label} ${info.code} introduccion intro`),
+      searchable: normalize(`${label} ${info.code} ${introTitle} intro introduccion introduction introduzione introducao`),
     });
   });
   // Museum
   MUSEUM_INFO.forEach((info, i) => {
     const id = `MUSEUM-${i + 1}`;
+    const label = t(info.labelKey);
     out.push({
       id,
       key: 'museum',
-      sectionTitle: 'Museo FIFA',
+      sectionTitle: museumTitle,
       sectionSort: 1,
       number: i + 1,
-      label: info.label,
+      label,
       flag: info.flag,
       code: info.code,
       accent: info.accent,
       count: counts[id] || 0,
-      searchable: normalize(`${info.label} ${info.code} museo fifa campeon`),
+      searchable: normalize(`${label} ${info.code} ${museumTitle} museo museum musee museu fifa campeon champion`),
     });
   });
   // Teams (by groups, in album order)
   GROUPS.forEach((g, gi) => {
-    TEAMS_BY_GROUP[g].forEach((t, ti) => {
+    TEAMS_BY_GROUP[g].forEach((tm, ti) => {
+      const teamName = countryName(tm.code);
       for (let i = 1; i <= 20; i++) {
-        const id = `${t.code}-${i}`;
+        const id = `${tm.code}-${i}`;
         const isPlayer = i !== 1 && i !== 13;
         const label =
-          i === 1 ? 'Escudo' : i === 13 ? 'Equipo' : (names[id] || DEFAULT_NAMES[id] || '');
+          i === 1 ? t('sticker.escudo')
+          : i === 13 ? t('sticker.equipo')
+          : (names[id] || DEFAULT_NAMES[id] || '');
         out.push({
           id,
           key: 'team',
-          team: t,
+          team: { ...tm, name: teamName },
           group: g,
-          sectionTitle: `Grupo ${g} · ${t.name}`,
+          sectionTitle: `${groupWord} ${g} · ${teamName}`,
           sectionSort: 100 + gi * 10 + ti,
           number: i,
           label,
-          flag: t.flag,
-          code: t.code,
-          accent: t.color,
+          flag: tm.flag,
+          code: tm.code,
+          accent: tm.color,
           isPlayer,
           count: counts[id] || 0,
-          searchable: normalize(`${label} ${t.name} ${t.code} grupo ${g} #${i} ${i}`),
+          searchable: normalize(`${label} ${teamName} ${tm.name} ${tm.code} ${groupWord} ${g} grupo group groupe girone #${i} ${i}`),
         });
       }
     });
@@ -1143,7 +1791,7 @@ function allStickers(counts, names) {
     out.push({
       id,
       key: 'coca',
-      sectionTitle: 'Extras Coca-Cola',
+      sectionTitle: cocaTitle,
       sectionSort: 1000,
       number: i + 1,
       label: info.label,
@@ -1177,6 +1825,23 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [editingId, setEditingId] = useState(null); // sticker id being renamed
+  const [lang, setLangState] = useState(() => detectLang());
+
+  const setLang = useCallback((newLang) => {
+    if (!SUPPORTED_LANGS.includes(newLang)) return;
+    setLangState(newLang);
+    try { localStorage.setItem(LANG_KEY, newLang); } catch (e) {}
+  }, []);
+
+  const t = useCallback((key) => {
+    return (T[lang] && T[lang][key]) || T[DEFAULT_LANG][key] || key;
+  }, [lang]);
+
+  const countryName = useCallback((code) => {
+    return (COUNTRY_NAMES[code] && COUNTRY_NAMES[code][lang]) || (TEAM_BY_CODE[code]?.name) || code;
+  }, [lang]);
+
+  const langCtx = useMemo(() => ({ lang, setLang, t, countryName }), [lang, setLang, t, countryName]);
 
   // Load on mount (localStorage, synchronous)
   useEffect(() => {
@@ -1365,14 +2030,16 @@ export default function App() {
   if (!loaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-stone-50">
-        <div className="text-stone-400 font-mono-special text-sm tracking-widest">CARGANDO ÁLBUM...</div>
+        <div className="text-stone-400 font-mono-special text-sm tracking-widest">{t('loading')}</div>
       </div>
     );
   }
 
   const pct = Math.round((stats.unique / TOTAL_BASE) * 100);
+  const dupesPct = stats.unique > 0 ? Math.round((stats.dupes / stats.unique) * 100) : 0;
 
   return (
+    <LangContext.Provider value={langCtx}>
     <div className="min-h-screen bg-stone-50 text-stone-900 pb-20" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
       <div className="max-w-md mx-auto relative">
@@ -1388,6 +2055,7 @@ export default function App() {
           {view.type === 'home' && (
             <HomeView
               pct={pct}
+              dupesPct={dupesPct}
               stats={stats}
               sectionStats={sectionStats}
               onNavigate={navigate}
@@ -1486,6 +2154,7 @@ export default function App() {
         )}
       </div>
     </div>
+    </LangContext.Provider>
   );
 }
 
@@ -1493,23 +2162,26 @@ export default function App() {
 // =========================
 // HOME VIEW
 // =========================
-function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
+function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick }) {
+  const { t } = useLang();
   return (
     <div className="px-4 pt-6">
       {/* Top brand */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <div className="font-mono-special text-[10px] tracking-[0.25em] text-stone-500">PANINI · OFICIAL</div>
-          <div className="font-display text-3xl mt-1 leading-none">ÁLBUM <span className="text-rose-600">26</span></div>
-          <div className="text-xs text-stone-500 mt-1">Mundial · USA · México · Canadá</div>
+          <div className="font-display text-3xl leading-none">{t('home.brand.album')} <span className="text-rose-600">26</span></div>
+          <div className="text-xs text-stone-500 mt-1">{t('home.brand.location')}</div>
         </div>
-        <button
-          onClick={onResetClick}
-          className="text-stone-400 hover:text-stone-600 p-2"
-          aria-label="Reiniciar"
-        >
-          <RotateCcw size={18} />
-        </button>
+        <div className="flex items-center gap-1">
+          <LangPicker />
+          <button
+            onClick={onResetClick}
+            className="text-stone-400 hover:text-stone-600 p-2"
+            aria-label={t('home.reset.aria')}
+          >
+            <RotateCcw size={18} />
+          </button>
+        </div>
       </div>
 
       {/* Big progress card */}
@@ -1520,7 +2192,7 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
           26
         </div>
         <div className="relative">
-          <div className="font-mono-special text-[10px] tracking-[0.25em] text-stone-500">PROGRESO</div>
+          <div className="font-mono-special text-[10px] tracking-[0.25em] text-stone-500">{t('home.progress')}</div>
           <div className="flex items-baseline gap-2 mt-2">
             <div className="font-display text-7xl leading-none text-stone-900">{pct}</div>
             <div className="font-display text-3xl text-stone-400">%</div>
@@ -1539,9 +2211,9 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
 
           {/* 3 stat cells */}
           <div className="grid grid-cols-3 gap-2 mt-5">
-            <StatCell icon={<Check size={14} />} value={stats.unique} label="pegadas" tone="emerald" />
-            <StatCell icon={<Hash size={14} />} value={stats.missing} label="faltan" tone="rose" />
-            <StatCell icon={<Flame size={14} />} value={stats.dupes} label="repes" tone="amber" />
+            <StatCell icon={<Check size={14} />} value={stats.unique} label={t('home.stats.collected')} tone="emerald" />
+            <StatCell icon={<Hash size={14} />} value={stats.missing} label={t('home.stats.missing')} tone="rose" />
+            <StatCell icon={<Flame size={14} />} value={stats.dupes} label={t('home.stats.dupes')} tone="amber" sub={stats.unique > 0 ? `${dupesPct}%` : null} />
           </div>
         </div>
       </div>
@@ -1556,8 +2228,8 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
             <Search size={16} className="text-white" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="font-display text-sm leading-tight">Buscar</div>
-            <div className="text-[10px] text-stone-500 leading-tight mt-0.5">por nombre o equipo</div>
+            <div className="font-display text-sm leading-tight">{t('home.action.search')}</div>
+            <div className="text-[10px] text-stone-500 leading-tight mt-0.5">{t('home.action.search.sub')}</div>
           </div>
         </button>
         <button
@@ -1569,10 +2241,10 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
           </div>
           <div className="min-w-0 flex-1">
             <div className="font-display text-sm leading-tight">
-              Mis repes{stats.dupes > 0 ? <span className="text-stone-400 font-mono-special font-normal"> · {stats.dupes}</span> : null}
+              {t('home.action.repes')}{stats.dupes > 0 ? <span className="text-stone-400 font-mono-special font-normal"> · {stats.dupes}</span> : null}
             </div>
             <div className="text-[10px] text-stone-500 leading-tight mt-0.5">
-              {stats.dupes > 0 ? 'para intercambiar' : 'todavía nada'}
+              {stats.dupes > 0 ? `${t('home.action.repes.sub.has')} · ${dupesPct}%` : t('home.action.repes.sub.empty')}
             </div>
           </div>
         </button>
@@ -1580,13 +2252,13 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
 
       {/* Sections */}
       <div className="font-mono-special text-[10px] tracking-[0.25em] text-stone-500 mt-6 mb-3 px-1">
-        SECCIONES DEL ÁLBUM
+        {t('home.sections')}
       </div>
 
       <div className="space-y-2">
         <SectionCard
-          title="Introducción"
-          subtitle="Trofeo, mascota, estadios"
+          title={t('section.intro.title')}
+          subtitle={t('section.intro.sub')}
           collected={sectionStats.intro.collected}
           total={sectionStats.intro.total}
           icon={<Sparkles size={18} />}
@@ -1594,8 +2266,8 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
           onClick={() => onNavigate({ type: 'simple', section: 'INTRO' })}
         />
         <SectionCard
-          title="Equipos"
-          subtitle="48 selecciones · 12 grupos"
+          title={t('section.teams.title')}
+          subtitle={t('section.teams.sub')}
           collected={sectionStats.teams.collected}
           total={sectionStats.teams.total}
           icon={<Users size={18} />}
@@ -1604,8 +2276,8 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
           big
         />
         <SectionCard
-          title="Museo FIFA"
-          subtitle="Campeones de la historia"
+          title={t('section.museum.title')}
+          subtitle={t('section.museum.sub')}
           collected={sectionStats.museum.collected}
           total={sectionStats.museum.total}
           icon={<Trophy size={18} />}
@@ -1613,8 +2285,8 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
           onClick={() => onNavigate({ type: 'simple', section: 'MUSEUM' })}
         />
         <SectionCard
-          title="Extras Coca-Cola"
-          subtitle="No cuentan en el 980"
+          title={t('section.coca.title')}
+          subtitle={t('section.coca.sub')}
           collected={sectionStats.coca.collected}
           total={sectionStats.coca.total}
           icon={<Star size={18} />}
@@ -1625,13 +2297,58 @@ function HomeView({ pct, stats, sectionStats, onNavigate, onResetClick }) {
       </div>
 
       <div className="text-center text-[11px] text-stone-400 mt-8 font-mono-special tracking-widest">
-        SE GUARDA AUTOMÁTICAMENTE
+        {t('home.autosave')}
       </div>
     </div>
   );
 }
 
-function StatCell({ icon, value, label, tone }) {
+function LangPicker() {
+  const { lang, setLang, t } = useLang();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="text-stone-500 hover:text-stone-900 p-2 flex items-center gap-1"
+        aria-label={t('lang.picker')}
+      >
+        <span className="text-base leading-none">{LANG_INFO[lang].flag}</span>
+        <span className="font-mono-special text-[10px] font-bold uppercase">{lang}</span>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1 bg-white rounded-xl panini-shadow z-30 min-w-[140px] py-1 overflow-hidden">
+          {SUPPORTED_LANGS.map(code => (
+            <button
+              key={code}
+              onClick={() => { setLang(code); setOpen(false); }}
+              className={`w-full px-3 py-2 text-left flex items-center gap-2 text-sm active:bg-stone-100 ${
+                code === lang ? 'bg-stone-100 font-semibold' : 'hover:bg-stone-50'
+              }`}
+            >
+              <span className="text-base leading-none">{LANG_INFO[code].flag}</span>
+              <span className="flex-1">{LANG_INFO[code].label}</span>
+              {code === lang && <Check size={14} className="text-emerald-600" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function StatCell({ icon, value, label, tone, sub }) {
   const toneMap = {
     emerald: 'bg-emerald-50 text-emerald-700',
     rose: 'bg-rose-50 text-rose-700',
@@ -1643,7 +2360,10 @@ function StatCell({ icon, value, label, tone }) {
         {icon}
         <span className="text-[10px] uppercase tracking-wider font-medium">{label}</span>
       </div>
-      <div className="font-mono-special text-xl font-bold mt-1">{value}</div>
+      <div className="flex items-baseline gap-1 mt-1">
+        <div className="font-mono-special text-xl font-bold">{value}</div>
+        {sub && <div className="font-mono-special text-[10px] opacity-70">{sub}</div>}
+      </div>
     </div>
   );
 }
@@ -1697,10 +2417,11 @@ function SectionCard({ title, subtitle, collected, total, icon, accent, onClick,
 // SIMPLE GRID VIEW (Intro / Museum / Coca)
 // =========================
 function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, currentView, onReplaceView }) {
+  const { t } = useLang();
   const config = {
-    INTRO:  { title: 'Introducción',     subtitle: 'Logo, emblemas, mascotas, sedes', accent: '#1E40AF', data: INTRO_INFO },
-    MUSEUM: { title: 'Museo FIFA',       subtitle: 'Campeones de la historia',       accent: '#F59E0B', data: MUSEUM_INFO },
-    COCA:   { title: 'Extras Coca-Cola', subtitle: '12 stickers exclusivos',         accent: '#DC2626', data: COCA_INFO },
+    INTRO:  { title: t('section.intro.title'),  subtitle: t('simplegrid.intro.sub'), accent: '#1E40AF', data: INTRO_INFO },
+    MUSEUM: { title: t('section.museum.title'), subtitle: t('section.museum.sub'),  accent: '#F59E0B', data: MUSEUM_INFO },
+    COCA:   { title: t('section.coca.title'),   subtitle: t('simplegrid.coca.sub'), accent: '#DC2626', data: COCA_INFO },
   }[section];
 
   return (
@@ -1713,6 +2434,7 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
           const idx = i + 1;
           const id = `${section}-${idx}`;
           const count = counts[id] || 0;
+          const label = info.labelKey ? t(info.labelKey) : info.label;
           return (
             <StickerCell
               key={id}
@@ -1721,7 +2443,7 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
               accent={info.accent}
               flag={info.flag}
               code={info.code}
-              fixedLabel={info.label}
+              fixedLabel={label}
               isPlayer={false}
               onTap={() => onStickerTap(id)}
               onEditName={() => {}}
@@ -1740,53 +2462,54 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
 // GROUPS VIEW (12 groups, all teams listed)
 // =========================
 function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
+  const { t, countryName } = useLang();
   return (
     <div className="px-4 pt-4">
-      <Header onBack={onBack} title="Equipos" subtitle="48 selecciones · 12 grupos" accent="#E11D48" />
+      <Header onBack={onBack} title={t('section.teams.title')} subtitle={t('section.teams.sub')} accent="#E11D48" />
 
       <div className="mt-4 space-y-5">
         {GROUPS.map(g => {
           const teams = TEAMS_BY_GROUP[g];
-          const groupCollected = teams.reduce((s, t) => s + teamStats(t.code).collected, 0);
+          const groupCollected = teams.reduce((s, tm) => s + teamStats(tm.code).collected, 0);
           const groupTotal = teams.length * 20;
           return (
             <div key={g}>
               <div className="flex items-center justify-between px-1 mb-2">
                 <div className="flex items-center gap-2">
-                  <div className="font-display text-2xl text-stone-900 leading-none">GRUPO {g}</div>
+                  <div className="font-display text-2xl text-stone-900 leading-none">{t('group')} {g}</div>
                 </div>
                 <div className="font-mono-special text-xs text-stone-500">
                   {groupCollected}<span className="text-stone-400">/{groupTotal}</span>
                 </div>
               </div>
               <div className="space-y-2">
-                {teams.map(t => {
-                  const ts = teamStats(t.code);
+                {teams.map(tm => {
+                  const ts = teamStats(tm.code);
                   const pct = Math.round((ts.collected / ts.total) * 100);
                   const done = ts.collected === ts.total;
                   return (
                     <button
-                      key={t.code}
-                      onClick={() => onTeamSelect(t.code)}
+                      key={tm.code}
+                      onClick={() => onTeamSelect(tm.code)}
                       className="w-full bg-white rounded-2xl panini-shadow p-3 text-left active:scale-[0.99] transition-transform"
                     >
                       <div className="flex items-center gap-3">
                         {/* Flag tile with team color border */}
                         <div
                           className="rounded-lg w-12 h-12 flex flex-col items-center justify-center flex-shrink-0 relative overflow-hidden"
-                          style={{ backgroundColor: t.color }}
+                          style={{ backgroundColor: tm.color }}
                         >
-                          <div className="text-2xl leading-none">{t.flag}</div>
+                          <div className="text-2xl leading-none">{tm.flag}</div>
                           <div
                             className="font-mono-special text-[8px] tracking-widest mt-0.5 font-bold"
-                            style={{ color: textOn(t.color), opacity: 0.85 }}
+                            style={{ color: textOn(tm.color), opacity: 0.85 }}
                           >
-                            {t.code}
+                            {tm.code}
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <div className="font-display text-base leading-tight truncate">{t.name}</div>
+                            <div className="font-display text-base leading-tight truncate">{countryName(tm.code)}</div>
                             <div className="font-mono-special text-sm font-bold flex-shrink-0">
                               {ts.collected}<span className="text-stone-400">/20</span>
                             </div>
@@ -1794,19 +2517,19 @@ function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
                           <div className="h-1.5 bg-stone-100 rounded-full mt-1.5 overflow-hidden">
                             <div
                               className="h-full rounded-full transition-all duration-300"
-                              style={{ width: `${pct}%`, backgroundColor: t.color }}
+                              style={{ width: `${pct}%`, backgroundColor: tm.color }}
                             />
                           </div>
                           {(ts.dupes > 0 || done) && (
                             <div className="flex items-center gap-2 mt-1.5">
                               {done && (
                                 <div className="text-[10px] font-mono-special tracking-wider bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">
-                                  COMPLETO ✓
+                                  {t('team.complete')}
                                 </div>
                               )}
                               {ts.dupes > 0 && (
                                 <div className="text-[10px] font-mono-special tracking-wider bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">
-                                  {ts.dupes} {ts.dupes === 1 ? 'repe' : 'repes'}
+                                  {ts.dupes} {ts.dupes === 1 ? t('team.repe') : t('team.repesPlural')}
                                 </div>
                               )}
                             </div>
@@ -1829,7 +2552,9 @@ function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
 // TEAM VIEW (20 stickers)
 // =========================
 function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName, onBack, currentView, onReplaceView }) {
+  const { t, countryName } = useLang();
   const team = TEAM_BY_CODE[code];
+  const teamLocalizedName = countryName(code);
   let collected = 0;
   let dupes = 0;
   for (let i = 1; i <= 20; i++) {
@@ -1855,7 +2580,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
         className="flex items-center gap-1 text-stone-500 active:text-stone-900 mb-3 -ml-1"
       >
         <ChevronLeft size={20} />
-        <span className="text-sm">Equipos</span>
+        <span className="text-sm">{t('team.back')}</span>
       </button>
 
       {/* Album-style team header: WE ARE [COUNTRY] */}
@@ -1873,15 +2598,15 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
 
         <div className="relative p-5">
           <div className="font-mono-special text-[10px] tracking-[0.3em] opacity-70">
-            GRUPO {team.group}
+            {t('group')} {team.group}
           </div>
           <div
             className="font-display text-xs tracking-[0.3em] opacity-80 mt-2"
           >
-            WE ARE
+            {t('team.weAre')}
           </div>
           <div className="flex items-center gap-3 mt-1">
-            <div className="font-display text-3xl leading-none uppercase">{team.name}</div>
+            <div className="font-display text-3xl leading-none uppercase">{teamLocalizedName}</div>
             <span className="text-3xl leading-none">{team.flag}</span>
           </div>
 
@@ -1914,7 +2639,8 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
           const id = `${code}-${idx}`;
           const count = counts[id] || 0;
           const isPlayer = idx !== 1 && idx !== 13;
-          const fixedLabel = idx === 1 ? 'Escudo' : idx === 13 ? 'Equipo' : null;
+          const fixedKind = idx === 1 ? 'escudo' : idx === 13 ? 'equipo' : null;
+          const fixedLabel = fixedKind ? t(`sticker.${fixedKind}`) : null;
           const playerName = resolveName(id, names);
           const isCustomName = !!names[id];
 
@@ -1927,6 +2653,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
               flag={team.flag}
               code={team.code}
               fixedLabel={fixedLabel}
+              fixedKind={fixedKind}
               playerName={playerName}
               isCustomName={isCustomName}
               isPlayer={isPlayer}
@@ -1942,7 +2669,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
           <div className="flex items-center gap-2 mb-2">
             <Flame size={14} className="text-amber-700" />
             <div className="font-mono-special text-[10px] tracking-[0.2em] text-amber-800">
-              REPES PARA INTERCAMBIAR
+              {t('team.repesPanel')}
             </div>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -1970,7 +2697,8 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
 // =========================
 // STICKER CELL — figurita-style when collected
 // =========================
-function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName, isCustomName, isPlayer, onTap, onEditName }) {
+function StickerCell({ number, count, accent, flag, code, fixedLabel, fixedKind, playerName, isCustomName, isPlayer, onTap, onEditName }) {
+  const { t } = useLang();
   const collected = count > 0;
   const dupes = Math.max(0, count - 1);
   const onColor = collected ? textOn(accent) : '#A8A29E';
@@ -2066,11 +2794,7 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName
                 className="font-display text-[9px] tracking-[0.15em]"
                 style={{ color: subColor }}
               >
-                {fixedLabel === 'Escudo'
-                  ? 'ESCUDO'
-                  : fixedLabel === 'Equipo'
-                  ? 'EQUIPO'
-                  : code}
+                {fixedKind === 'escudo' || fixedKind === 'equipo' ? fixedLabel : code}
               </span>
             </div>
 
@@ -2114,7 +2838,7 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName
           ) : (
             <div className="text-[10px] text-stone-400 truncate flex items-center justify-center gap-0.5">
               <Pencil size={9} />
-              <span>nombre</span>
+              <span>{t('sticker.namePlaceholder')}</span>
             </div>
           )}
         </button>
@@ -2127,6 +2851,7 @@ function StickerCell({ number, count, accent, flag, code, fixedLabel, playerName
 // NAME EDIT MODAL
 // =========================
 function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext }) {
+  const { t, countryName } = useLang();
   const [value, setValue] = useState(currentName);
   const inputRef = useRef(null);
 
@@ -2168,7 +2893,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <span className="text-xl">{team.flag}</span>
-            <div className="font-display text-base">{team.name}</div>
+            <div className="font-display text-base">{countryName(team.code)}</div>
           </div>
           <button
             onClick={onCancel}
@@ -2178,7 +2903,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
           </button>
         </div>
         <div className="font-mono-special text-[10px] tracking-[0.2em] text-stone-500">
-          FIGURITA #{String(num).padStart(2, '0')}
+          {t('modal.figurita')} #{String(num).padStart(2, '0')}
         </div>
 
         <input
@@ -2187,7 +2912,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Nombre del jugador"
+          placeholder={t('modal.placeholder')}
           className="mt-4 w-full px-4 py-3 bg-stone-100 rounded-xl text-base font-medium outline-none focus:bg-stone-50 focus:ring-2 focus:ring-stone-300"
           autoComplete="off"
           autoCapitalize="words"
@@ -2198,14 +2923,14 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
             onClick={onCancel}
             className="flex-1 py-3 rounded-xl bg-stone-100 text-stone-900 font-medium active:bg-stone-200"
           >
-            Cancelar
+            {t('modal.cancel')}
           </button>
           {!isLastPlayer ? (
             <button
               onClick={() => onSaveAndNext(value)}
               className="flex-1 py-3 rounded-xl bg-stone-900 text-white font-medium active:bg-stone-700 flex items-center justify-center gap-1.5"
             >
-              Guardar
+              {t('modal.save')}
               <ArrowRight size={16} />
             </button>
           ) : (
@@ -2213,12 +2938,12 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
               onClick={() => onSave(value)}
               className="flex-1 py-3 rounded-xl bg-stone-900 text-white font-medium active:bg-stone-700"
             >
-              Guardar
+              {t('modal.save')}
             </button>
           )}
         </div>
         <div className="text-[11px] text-stone-400 text-center mt-2 font-mono-special">
-          {isLastPlayer ? 'ÚLTIMA FIGURITA' : 'GUARDA Y AVANZA AL SIGUIENTE'}
+          {isLastPlayer ? t('modal.lastFigurita') : t('modal.saveAndAdvance')}
         </div>
       </div>
     </div>
@@ -2230,6 +2955,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
 // RESULT ROW (used by Search and Repes)
 // =========================
 function ResultRow({ s, onTap }) {
+  const { t } = useLang();
   const fg = textOn(s.accent);
   return (
     <button
@@ -2250,7 +2976,7 @@ function ResultRow({ s, onTap }) {
       </div>
       <div className="flex-1 min-w-0 text-left">
         <div className="font-medium text-[13px] leading-tight truncate text-stone-900">
-          {s.label || <span className="text-stone-400">(sin nombre)</span>}
+          {s.label || <span className="text-stone-400">{t('result.noName')}</span>}
         </div>
         <div className="text-[10px] text-stone-500 truncate font-mono-special tracking-wider mt-0.5">
           {s.sectionTitle} · #{String(s.number).padStart(2, '0')}
@@ -2258,7 +2984,7 @@ function ResultRow({ s, onTap }) {
       </div>
       <div className="flex-shrink-0">
         {s.count === 0 ? (
-          <span className="text-[10px] text-stone-400 font-mono-special tracking-wider">FALTA</span>
+          <span className="text-[10px] text-stone-400 font-mono-special tracking-wider">{t('result.missing')}</span>
         ) : s.count === 1 ? (
           <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center">
             <Check className="text-emerald-700" size={14} strokeWidth={3} />
@@ -2277,15 +3003,16 @@ function ResultRow({ s, onTap }) {
 // SEARCH VIEW
 // =========================
 function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNavigate, onBack }) {
+  const { t, lang, countryName } = useLang();
   const [query, setQuery] = useState('');
   const inputRef = useRef(null);
 
   useEffect(() => {
-    const t = setTimeout(() => inputRef.current?.focus(), 80);
-    return () => clearTimeout(t);
+    const to = setTimeout(() => inputRef.current?.focus(), 80);
+    return () => clearTimeout(to);
   }, []);
 
-  const all = useMemo(() => allStickers(counts, names), [counts, names]);
+  const all = useMemo(() => allStickers(counts, names, t, countryName), [counts, names, lang, t, countryName]);
 
   const results = useMemo(() => {
     const q = normalize(query.trim());
@@ -2302,7 +3029,7 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
         className="flex items-center gap-1 text-stone-500 active:text-stone-900 mb-3 -ml-1"
       >
         <ChevronLeft size={20} />
-        <span className="text-sm">Inicio</span>
+        <span className="text-sm">{t('search.back')}</span>
       </button>
 
       {/* Search input */}
@@ -2313,7 +3040,7 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Nombre, país, código FIFA, número..."
+          placeholder={t('search.placeholder')}
           className="flex-1 bg-transparent outline-none text-base py-2 min-w-0"
           autoComplete="off"
           autoCorrect="off"
@@ -2335,38 +3062,35 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
       {isEmpty ? (
         <div className="mt-6 px-1 text-stone-500">
           <div className="font-mono-special text-[10px] tracking-widest text-stone-400 mb-3">
-            CÓMO BUSCAR
+            {t('search.howTo')}
           </div>
           <div className="space-y-2 text-[13px]">
-            <div>• Por <span className="font-medium text-stone-900">jugador</span>: ej. <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Messi</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Yamal</span></div>
-            <div>• Por <span className="font-medium text-stone-900">país</span>: ej. <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Argentina</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Brasil</span></div>
-            <div>• Por <span className="font-medium text-stone-900">código FIFA</span>: ej. <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">ARG</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">ESP</span></div>
-            <div>• Por <span className="font-medium text-stone-900">número</span>: ej. <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">17</span></div>
-            <div>• Por <span className="font-medium text-stone-900">año</span> (Museo): ej. <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">1986</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">2022</span></div>
+            <div>• {t('search.howTo.byLabel')} <span className="font-medium text-stone-900">{t('search.howTo.player')}</span>: <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Messi</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">Yamal</span></div>
+            <div>• {t('search.howTo.byLabel')} <span className="font-medium text-stone-900">{t('search.howTo.country')}</span>: <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">{countryName('ARG')}</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">{countryName('BRA')}</span></div>
+            <div>• {t('search.howTo.byLabel')} <span className="font-medium text-stone-900">{t('search.howTo.fifaCode')}</span>: <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">ARG</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">ESP</span></div>
+            <div>• {t('search.howTo.byLabel')} <span className="font-medium text-stone-900">{t('search.howTo.number')}</span>: <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">17</span></div>
+            <div>• {t('search.howTo.byLabel')} <span className="font-medium text-stone-900">{t('search.howTo.year')}</span>: <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">1986</span>, <span className="font-mono-special bg-stone-100 px-1.5 py-0.5 rounded">2022</span></div>
           </div>
         </div>
       ) : results.length === 0 ? (
         <div className="mt-8 text-center text-stone-500">
           <div className="text-4xl mb-2">😕</div>
-          <div className="font-display text-lg">Sin resultados</div>
-          <div className="text-sm text-stone-400 mt-1">Probá con otro nombre, país o código</div>
+          <div className="font-display text-lg">{t('search.empty.title')}</div>
+          <div className="text-sm text-stone-400 mt-1">{t('search.empty.sub')}</div>
         </div>
       ) : (
         <>
           <div className="font-mono-special text-[10px] tracking-widest text-stone-400 mt-4 mb-2 px-1">
-            {results.length} {results.length === 1 ? 'RESULTADO' : 'RESULTADOS'}
+            {results.length} {results.length === 1 ? t('search.result') : t('search.results')}
           </div>
           <div className="space-y-1.5">
             {results.map(s => {
-              // We support two interactions: tap = mark in current mode, swipe / long path is navigate
-              // For simplicity: tap = increment/decrement based on mode. To navigate to the team page,
-              // we offer a small "→" affordance to the right of the count (kept simple for v1: tap row toggles).
               return <ResultRow key={s.id} s={s} onTap={onStickerTap} />;
             })}
           </div>
 
           <div className="text-center text-[11px] text-stone-400 mt-6 font-mono-special tracking-widest">
-            TOCÁ UN RESULTADO PARA {mode === 'add' ? 'SUMAR' : 'RESTAR'}
+            {mode === 'add' ? t('search.tapHint.add') : t('search.tapHint.sub')}
           </div>
         </>
       )}
@@ -2378,10 +3102,13 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
 // REPES VIEW
 // =========================
 function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
-  const all = useMemo(() => allStickers(counts, names), [counts, names]);
+  const { t, lang, countryName } = useLang();
+  const all = useMemo(() => allStickers(counts, names, t, countryName), [counts, names, lang, t, countryName]);
 
   const repes = useMemo(() => all.filter(s => s.count > 1), [all]);
   const totalRepes = useMemo(() => repes.reduce((acc, s) => acc + (s.count - 1), 0), [repes]);
+  const stuckCount = useMemo(() => all.filter(s => s.key !== 'coca' && s.count > 0).length, [all]);
+  const dupesPct = stuckCount > 0 ? Math.round((totalRepes / stuckCount) * 100) : 0;
 
   // Group by sectionTitle, preserving sectionSort order
   const groups = useMemo(() => {
@@ -2405,7 +3132,7 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
         className="flex items-center gap-1 text-stone-500 active:text-stone-900 mb-3 -ml-1"
       >
         <ChevronLeft size={20} />
-        <span className="text-sm">Inicio</span>
+        <span className="text-sm">{t('search.back')}</span>
       </button>
 
       <div className="bg-white rounded-2xl panini-shadow p-4 relative overflow-hidden">
@@ -2414,18 +3141,23 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
         </div>
         <div className="relative">
           <div className="font-mono-special text-[10px] tracking-[0.25em] text-amber-700">
-            PARA INTERCAMBIAR
+            {t('repes.label')}
           </div>
-          <div className="font-display text-2xl mt-1">Mis repes</div>
+          <div className="font-display text-2xl mt-1">{t('repes.title')}</div>
           <div className="flex items-baseline gap-2 mt-2">
             <div className="font-display text-4xl">{totalRepes}</div>
             <div className="text-sm text-stone-500">
-              {totalRepes === 1 ? 'figurita repetida' : 'figuritas repetidas'}
+              {totalRepes === 1 ? t('repes.figRepeated') : t('repes.figRepeatedPlural')}
             </div>
           </div>
           {repes.length > 0 && (
             <div className="text-xs text-stone-500 mt-1">
-              en {repes.length} {repes.length === 1 ? 'figurita distinta' : 'figuritas distintas'}
+              {t('repes.in')} {repes.length} {repes.length === 1 ? t('repes.distinct') : t('repes.distinctPlural')}
+              {stuckCount > 0 && (
+                <span className="ml-2 font-mono-special bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] tracking-wider">
+                  {dupesPct}% {t('repes.ofStuck')}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -2434,9 +3166,9 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
       {repes.length === 0 ? (
         <div className="mt-10 text-center text-stone-500 px-6">
           <div className="text-5xl mb-3">📭</div>
-          <div className="font-display text-lg">Todavía no tenés repes</div>
+          <div className="font-display text-lg">{t('repes.empty.title')}</div>
           <div className="text-sm text-stone-400 mt-2 leading-relaxed">
-            Cuando tengas una figurita más de una vez, va a aparecer acá para que la tengas a mano cuando intercambies.
+            {t('repes.empty.sub')}
           </div>
         </div>
       ) : (
@@ -2444,27 +3176,30 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
           <ModeToggle mode={mode} setMode={setMode} />
 
           <div className="mt-4 space-y-5">
-            {groups.map(g => (
-              <div key={g.title}>
-                <div className="flex items-center justify-between px-1 mb-2">
-                  <div className="font-display text-sm uppercase tracking-wide text-stone-700">
-                    {g.title}
+            {groups.map(g => {
+              const groupTotal = g.items.reduce((acc, s) => acc + (s.count - 1), 0);
+              return (
+                <div key={g.title}>
+                  <div className="flex items-center justify-between px-1 mb-2">
+                    <div className="font-display text-sm uppercase tracking-wide text-stone-700">
+                      {g.title}
+                    </div>
+                    <div className="font-mono-special text-[10px] text-stone-400">
+                      {groupTotal} {groupTotal === 1 ? t('team.repe') : t('team.repesPlural')}
+                    </div>
                   </div>
-                  <div className="font-mono-special text-[10px] text-stone-400">
-                    {g.items.reduce((acc, s) => acc + (s.count - 1), 0)} repe{g.items.reduce((acc, s) => acc + (s.count - 1), 0) === 1 ? '' : 's'}
+                  <div className="space-y-1.5">
+                    {g.items.map(s => (
+                      <ResultRow key={s.id} s={s} onTap={onStickerTap} />
+                    ))}
                   </div>
                 </div>
-                <div className="space-y-1.5">
-                  {g.items.map(s => (
-                    <ResultRow key={s.id} s={s} onTap={onStickerTap} />
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="text-center text-[11px] text-stone-400 mt-6 font-mono-special tracking-widest">
-            TOCÁ PARA {mode === 'add' ? 'SUMAR' : 'RESTAR'} · CAMBIÁ EL MODO ARRIBA
+            {mode === 'add' ? t('repes.tapHint.add') : t('repes.tapHint.sub')}
           </div>
         </>
       )}
@@ -2476,10 +3211,23 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
 // =========================
 // PAGE NAV (prev/next page in album order, used in TeamView and SimpleGridView)
 // =========================
+function pageLabels(p, t, countryName) {
+  if (p.type === 'team') {
+    return { label: countryName(p.code), subtitle: `${t('group')} ${p.group}` };
+  }
+  return {
+    label: p.labelKey ? t(p.labelKey) : '',
+    subtitle: p.subtitleKey ? t(p.subtitleKey) : '',
+  };
+}
+
 function PageNav({ currentView, onReplaceView }) {
+  const { t, countryName } = useLang();
   const prev = pageNeighbor(currentView, -1);
   const next = pageNeighbor(currentView, +1);
   if (!prev || !next) return null;
+  const prevL = pageLabels(prev, t, countryName);
+  const nextL = pageLabels(next, t, countryName);
   return (
     <div className="mt-7 grid grid-cols-2 gap-2">
       <button
@@ -2488,9 +3236,9 @@ function PageNav({ currentView, onReplaceView }) {
       >
         <ChevronLeft size={18} className="text-stone-500 flex-shrink-0" />
         <div className="min-w-0 flex-1">
-          <div className="font-mono-special text-[9px] tracking-[0.2em] text-stone-400">ANTERIOR</div>
-          <div className="font-display text-sm leading-tight truncate">{prev.label}</div>
-          <div className="text-[10px] text-stone-500 truncate">{prev.subtitle}</div>
+          <div className="font-mono-special text-[9px] tracking-[0.2em] text-stone-400">{t('pageNav.prev')}</div>
+          <div className="font-display text-sm leading-tight truncate">{prevL.label}</div>
+          <div className="text-[10px] text-stone-500 truncate">{prevL.subtitle}</div>
         </div>
       </button>
       <button
@@ -2498,9 +3246,9 @@ function PageNav({ currentView, onReplaceView }) {
         className="bg-white rounded-2xl panini-shadow px-3 py-2.5 flex items-center gap-2 active:scale-[0.99] transition-transform text-left min-w-0"
       >
         <div className="min-w-0 flex-1 text-right">
-          <div className="font-mono-special text-[9px] tracking-[0.2em] text-stone-400">SIGUIENTE</div>
-          <div className="font-display text-sm leading-tight truncate">{next.label}</div>
-          <div className="text-[10px] text-stone-500 truncate">{next.subtitle}</div>
+          <div className="font-mono-special text-[9px] tracking-[0.2em] text-stone-400">{t('pageNav.next')}</div>
+          <div className="font-display text-sm leading-tight truncate">{nextL.label}</div>
+          <div className="text-[10px] text-stone-500 truncate">{nextL.subtitle}</div>
         </div>
         <ChevronRight size={18} className="text-stone-500 flex-shrink-0" />
       </button>
@@ -2512,6 +3260,7 @@ function PageNav({ currentView, onReplaceView }) {
 // SHARED UI
 // =========================
 function Header({ onBack, title, subtitle, accent }) {
+  const { t } = useLang();
   return (
     <div>
       <button
@@ -2519,7 +3268,7 @@ function Header({ onBack, title, subtitle, accent }) {
         className="flex items-center gap-1 text-stone-500 active:text-stone-900 mb-3 -ml-1"
       >
         <ChevronLeft size={20} />
-        <span className="text-sm">Volver</span>
+        <span className="text-sm">{t('header.back')}</span>
       </button>
       <div className="bg-white rounded-2xl panini-shadow p-4 relative overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: accent }} />
@@ -2533,6 +3282,7 @@ function Header({ onBack, title, subtitle, accent }) {
 }
 
 function ModeToggle({ mode, setMode }) {
+  const { t } = useLang();
   return (
     <div className="flex items-center gap-2 mt-4 bg-white rounded-2xl p-1 panini-shadow">
       <button
@@ -2544,7 +3294,7 @@ function ModeToggle({ mode, setMode }) {
         }`}
       >
         <Plus size={16} strokeWidth={2.5} />
-        Sumar
+        {t('mode.add')}
       </button>
       <button
         onClick={() => setMode('sub')}
@@ -2555,44 +3305,46 @@ function ModeToggle({ mode, setMode }) {
         }`}
       >
         <Minus size={16} strokeWidth={2.5} />
-        Restar
+        {t('mode.sub')}
       </button>
     </div>
   );
 }
 
 function Legend({ hasNames }) {
+  const { t } = useLang();
   return (
     <div className="mt-6 text-[11px] text-stone-500 space-y-1.5 px-1">
-      <div className="font-mono-special tracking-widest text-[10px] text-stone-400 mb-2">CÓMO SE USA</div>
-      <div>• Tocá una figurita para marcarla / sumarle</div>
-      <div>• Cambiá a <span className="font-medium">Restar</span> para quitar repes</div>
-      <div>• El número amarillo indica cuántas repes tenés</div>
-      {hasNames && <div>• Tocá <span className="font-medium">"nombre"</span> debajo del jugador para escribir cómo se llama</div>}
+      <div className="font-mono-special tracking-widest text-[10px] text-stone-400 mb-2">{t('legend.title')}</div>
+      <div>• {t('legend.tap')}</div>
+      <div>• {t('legend.swap.before')} <span className="font-medium">{t('mode.sub')}</span> {t('legend.swap.after')}</div>
+      <div>• {t('legend.dupes')}</div>
+      {hasNames && <div>• {t('legend.editName.before')} <span className="font-medium">"{t('sticker.namePlaceholder')}"</span> {t('legend.editName.after')}</div>}
     </div>
   );
 }
 
 function ConfirmReset({ onCancel, onConfirm }) {
+  const { t } = useLang();
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 px-4">
       <div className="bg-white rounded-3xl p-6 panini-shadow max-w-md w-full">
-        <div className="font-display text-2xl mb-2">¿Borrar todo?</div>
+        <div className="font-display text-2xl mb-2">{t('reset.title')}</div>
         <div className="text-sm text-stone-600 mb-5">
-          Vas a perder todo tu progreso del álbum. Esta acción no se puede deshacer.
+          {t('reset.body')}
         </div>
         <div className="flex gap-2">
           <button
             onClick={onCancel}
             className="flex-1 py-3 rounded-xl bg-stone-100 text-stone-900 font-medium active:bg-stone-200"
           >
-            Cancelar
+            {t('reset.cancel')}
           </button>
           <button
             onClick={onConfirm}
             className="flex-1 py-3 rounded-xl bg-rose-600 text-white font-medium active:bg-rose-700"
           >
-            Borrar todo
+            {t('reset.confirm')}
           </button>
         </div>
       </div>
