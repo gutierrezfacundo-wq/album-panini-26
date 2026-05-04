@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages, Cloud, CloudOff, Copy, Link2, Loader2, RefreshCw } from 'lucide-react';
 import { FLAGS } from './flags-data.js';
 
 // =========================
@@ -1016,6 +1016,9 @@ const TOTAL_BASE = INTRO_COUNT + MUSEUM_COUNT + 48 * STICKERS_PER_TEAM; // 980
 const STORAGE_KEY = 'panini26-counts-v2';
 const NAMES_KEY = 'panini26-names-v2';
 const LANG_KEY = 'panini26-lang-v1';
+const SYNC_CODE_KEY = 'panini26-sync-code-v1';
+const SYNC_TS_KEY = 'panini26-sync-ts-v1';
+const FIREBASE_DB = 'https://album-panini-26-default-rtdb.firebaseio.com';
 
 // =========================
 // i18n
@@ -1150,6 +1153,19 @@ const T = {
     'museum.italy2006': 'Italia 2006',
     'museum.germany2014': 'Alemania 2014',
     'museum.argentina2022': 'Argentina 2022',
+    'sync.title': 'Sincronización',
+    'sync.code.label': 'Tu código',
+    'sync.code.copy': 'Copiar',
+    'sync.code.copied': '¡Copiado!',
+    'sync.link.label': 'Vincular otro dispositivo',
+    'sync.link.placeholder': 'XXXX-XXXX',
+    'sync.link.button': 'Vincular',
+    'sync.link.linked': '¡Vinculado!',
+    'sync.link.notfound': 'Código no encontrado',
+    'sync.status.syncing': 'Sincronizando...',
+    'sync.status.synced': 'Sincronizado',
+    'sync.status.error': 'Sin conexión',
+    'sync.info': 'Ingresá este código en otro dispositivo para compartir tu progreso.',
   },
   en: {
     'loading': 'LOADING ALBUM...',
@@ -1269,6 +1285,19 @@ const T = {
     'museum.italy2006': 'Italy 2006',
     'museum.germany2014': 'Germany 2014',
     'museum.argentina2022': 'Argentina 2022',
+    'sync.title': 'Sync',
+    'sync.code.label': 'Your code',
+    'sync.code.copy': 'Copy',
+    'sync.code.copied': 'Copied!',
+    'sync.link.label': 'Link another device',
+    'sync.link.placeholder': 'XXXX-XXXX',
+    'sync.link.button': 'Link',
+    'sync.link.linked': 'Linked!',
+    'sync.link.notfound': 'Code not found',
+    'sync.status.syncing': 'Syncing...',
+    'sync.status.synced': 'Synced',
+    'sync.status.error': 'Offline',
+    'sync.info': 'Enter this code on another device to share your progress.',
   },
   fr: {
     'loading': 'CHARGEMENT...',
@@ -1388,6 +1417,19 @@ const T = {
     'museum.italy2006': 'Italie 2006',
     'museum.germany2014': 'Allemagne 2014',
     'museum.argentina2022': 'Argentine 2022',
+    'sync.title': 'Synchronisation',
+    'sync.code.label': 'Ton code',
+    'sync.code.copy': 'Copier',
+    'sync.code.copied': 'Copié !',
+    'sync.link.label': 'Lier un autre appareil',
+    'sync.link.placeholder': 'XXXX-XXXX',
+    'sync.link.button': 'Lier',
+    'sync.link.linked': 'Lié !',
+    'sync.link.notfound': 'Code introuvable',
+    'sync.status.syncing': 'Synchronisation...',
+    'sync.status.synced': 'Synchronisé',
+    'sync.status.error': 'Hors ligne',
+    'sync.info': 'Entre ce code sur un autre appareil pour partager ta progression.',
   },
   it: {
     'loading': 'CARICAMENTO ALBUM...',
@@ -1507,6 +1549,19 @@ const T = {
     'museum.italy2006': 'Italia 2006',
     'museum.germany2014': 'Germania 2014',
     'museum.argentina2022': 'Argentina 2022',
+    'sync.title': 'Sincronizzazione',
+    'sync.code.label': 'Il tuo codice',
+    'sync.code.copy': 'Copia',
+    'sync.code.copied': 'Copiato!',
+    'sync.link.label': 'Collega un altro dispositivo',
+    'sync.link.placeholder': 'XXXX-XXXX',
+    'sync.link.button': 'Collega',
+    'sync.link.linked': 'Collegato!',
+    'sync.link.notfound': 'Codice non trovato',
+    'sync.status.syncing': 'Sincronizzando...',
+    'sync.status.synced': 'Sincronizzato',
+    'sync.status.error': 'Offline',
+    'sync.info': 'Inserisci questo codice su un altro dispositivo per condividere i progressi.',
   },
   pt: {
     'loading': 'CARREGANDO ÁLBUM...',
@@ -1626,6 +1681,19 @@ const T = {
     'museum.italy2006': 'Itália 2006',
     'museum.germany2014': 'Alemanha 2014',
     'museum.argentina2022': 'Argentina 2022',
+    'sync.title': 'Sincronização',
+    'sync.code.label': 'Seu código',
+    'sync.code.copy': 'Copiar',
+    'sync.code.copied': 'Copiado!',
+    'sync.link.label': 'Vincular outro dispositivo',
+    'sync.link.placeholder': 'XXXX-XXXX',
+    'sync.link.button': 'Vincular',
+    'sync.link.linked': 'Vinculado!',
+    'sync.link.notfound': 'Código não encontrado',
+    'sync.status.syncing': 'Sincronizando...',
+    'sync.status.synced': 'Sincronizado',
+    'sync.status.error': 'Sem conexão',
+    'sync.info': 'Digite este código em outro dispositivo para compartilhar seu progresso.',
   },
 };
 
@@ -1880,6 +1948,37 @@ function viewForStickerId(id) {
 }
 
 // =========================
+// FIREBASE SYNC UTILS
+// =========================
+function generateSyncCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const arr = new Uint8Array(8);
+  crypto.getRandomValues(arr);
+  let s = '';
+  for (let i = 0; i < 8; i++) s += chars[arr[i] % chars.length];
+  return s.slice(0, 4) + '-' + s.slice(4);
+}
+
+function rawCode(code) { return code.replace('-', ''); }
+
+async function cloudPush(code, counts, names) {
+  const url = `${FIREBASE_DB}/syncs/${rawCode(code)}.json`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ counts, names, _ts: Date.now() }),
+  });
+  if (!res.ok) throw new Error('push failed');
+}
+
+async function cloudPull(code) {
+  const url = `${FIREBASE_DB}/syncs/${rawCode(code)}.json`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('pull failed');
+  return res.json();
+}
+
+// =========================
 // MAIN APP
 // =========================
 export default function App() {
@@ -1891,6 +1990,10 @@ export default function App() {
   const [confirmReset, setConfirmReset] = useState(false);
   const [editingId, setEditingId] = useState(null); // sticker id being renamed
   const [lang, setLangState] = useState(() => detectLang());
+  const [syncCode, setSyncCode] = useState('');
+  const [syncStatus, setSyncStatus] = useState('idle'); // 'idle'|'syncing'|'synced'|'error'
+  const [showSyncPanel, setShowSyncPanel] = useState(false);
+  const syncTimerRef = useRef(null);
 
   const setLang = useCallback((newLang) => {
     if (!SUPPORTED_LANGS.includes(newLang)) return;
@@ -1908,17 +2011,45 @@ export default function App() {
 
   const langCtx = useMemo(() => ({ lang, setLang, t, countryName }), [lang, setLang, t, countryName]);
 
-  // Load on mount (localStorage, synchronous)
+  // Load on mount: localStorage first (instant), then merge from cloud if newer
   useEffect(() => {
+    let localCounts = {};
+    let localNames = {};
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setCounts(JSON.parse(raw));
+      if (raw) localCounts = JSON.parse(raw);
     } catch (e) {}
     try {
       const raw = localStorage.getItem(NAMES_KEY);
-      if (raw) setNames(JSON.parse(raw));
+      if (raw) localNames = JSON.parse(raw);
     } catch (e) {}
+    setCounts(localCounts);
+    setNames(localNames);
     setLoaded(true);
+
+    let code = localStorage.getItem(SYNC_CODE_KEY);
+    if (!code) {
+      code = generateSyncCode();
+      localStorage.setItem(SYNC_CODE_KEY, code);
+    }
+    setSyncCode(code);
+
+    const localTs = parseInt(localStorage.getItem(SYNC_TS_KEY) || '0', 10);
+    setSyncStatus('syncing');
+    cloudPull(code).then(cloud => {
+      if (cloud && cloud._ts && cloud._ts > localTs) {
+        const nc = cloud.counts || {};
+        const nn = cloud.names || {};
+        setCounts(nc);
+        setNames(nn);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nc));
+          localStorage.setItem(NAMES_KEY, JSON.stringify(nn));
+          localStorage.setItem(SYNC_TS_KEY, String(cloud._ts));
+        } catch (e) {}
+      }
+      setSyncStatus('synced');
+    }).catch(() => setSyncStatus('error'));
   }, []);
 
   // Save counts on change
@@ -1940,6 +2071,21 @@ export default function App() {
       console.error('Save failed', e);
     }
   }, [names, loaded]);
+
+  // Debounced cloud push on any data change
+  useEffect(() => {
+    if (!loaded || !syncCode) return;
+    setSyncStatus('syncing');
+    if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+    syncTimerRef.current = setTimeout(() => {
+      cloudPush(syncCode, counts, names)
+        .then(() => {
+          setSyncStatus('synced');
+          try { localStorage.setItem(SYNC_TS_KEY, String(Date.now())); } catch (e) {}
+        })
+        .catch(() => setSyncStatus('error'));
+    }, 1500);
+  }, [counts, names, loaded, syncCode]);
 
   const updateName = useCallback((id, value) => {
     setNames(prev => {
@@ -1971,6 +2117,32 @@ export default function App() {
     setNames({});
     setConfirmReset(false);
     if (history.state?.modal) history.back();
+  }, []);
+
+  const linkToCode = useCallback(async (newCode) => {
+    const code = newCode.trim().toUpperCase();
+    if (rawCode(code).length !== 8) return 'invalid';
+    setSyncStatus('syncing');
+    try {
+      const cloud = await cloudPull(code);
+      if (!cloud || cloud._ts == null) return 'notfound';
+      const nc = cloud.counts || {};
+      const nn = cloud.names || {};
+      setCounts(nc);
+      setNames(nn);
+      setSyncCode(code);
+      try {
+        localStorage.setItem(SYNC_CODE_KEY, code);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nc));
+        localStorage.setItem(NAMES_KEY, JSON.stringify(nn));
+        localStorage.setItem(SYNC_TS_KEY, String(cloud._ts));
+      } catch (e) {}
+      setSyncStatus('synced');
+      return 'ok';
+    } catch (e) {
+      setSyncStatus('error');
+      return 'error';
+    }
   }, []);
 
   // ---- History-API navigation ----
@@ -2121,6 +2293,11 @@ export default function App() {
               onNavigate={navigate}
               onResetClick={openConfirmReset}
               activeView={view}
+              syncCode={syncCode}
+              syncStatus={syncStatus}
+              showSyncPanel={showSyncPanel}
+              setShowSyncPanel={setShowSyncPanel}
+              onLinkCode={linkToCode}
             />
           </div>
         </div>
@@ -2148,6 +2325,8 @@ export default function App() {
                     sectionStats={sectionStats}
                     onNavigate={navigate}
                     onResetClick={openConfirmReset}
+                    syncStatus={syncStatus}
+                    onSyncClick={() => setShowSyncPanel(true)}
                   />
                 </div>
                 {/* Desktop: welcome placeholder */}
@@ -2255,6 +2434,15 @@ export default function App() {
           }}
         />
       )}
+
+      {showSyncPanel && (
+        <SyncPanel
+          syncCode={syncCode}
+          syncStatus={syncStatus}
+          onLinkCode={linkToCode}
+          onClose={() => setShowSyncPanel(false)}
+        />
+      )}
     </div>
     </LangContext.Provider>
   );
@@ -2262,9 +2450,113 @@ export default function App() {
 
 
 // =========================
+// SYNC ICON
+// =========================
+function SyncIcon({ status, size = 16 }) {
+  if (status === 'syncing') return <Loader2 size={size} className="animate-spin text-stone-400" />;
+  if (status === 'synced')  return <Cloud size={size} className="text-emerald-500" />;
+  if (status === 'error')   return <CloudOff size={size} className="text-rose-400" />;
+  return <Cloud size={size} className="text-stone-300" />;
+}
+
+// =========================
+// SYNC PANEL
+// =========================
+function SyncPanel({ syncCode, syncStatus, onLinkCode, onClose }) {
+  const { t } = useLang();
+  const [inputCode, setInputCode] = useState('');
+  const [linkState, setLinkState] = useState('idle'); // 'idle'|'loading'|'ok'|'notfound'|'error'
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard?.writeText(syncCode).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
+
+  const handleLink = async () => {
+    if (!inputCode.trim()) return;
+    setLinkState('loading');
+    const result = await onLinkCode(inputCode);
+    setLinkState(result === 'ok' ? 'ok' : result === 'notfound' ? 'notfound' : 'error');
+    if (result === 'ok') setTimeout(onClose, 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 px-4">
+      <div className="bg-white rounded-3xl p-6 panini-shadow max-w-sm w-full">
+        <div className="flex items-center justify-between mb-5">
+          <div className="font-display text-xl">{t('sync.title')}</div>
+          <button onClick={onClose} className="text-stone-400 hover:text-stone-600 p-1"><X size={18} /></button>
+        </div>
+
+        {/* Current code */}
+        <div className="mb-5">
+          <div className="font-mono-special text-[10px] tracking-widest text-stone-400 mb-2">{t('sync.code.label')}</div>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 bg-stone-100 rounded-xl px-4 py-3 font-mono-special text-xl tracking-widest text-stone-800 text-center">
+              {syncCode}
+            </div>
+            <button
+              onClick={handleCopy}
+              className="flex-shrink-0 bg-stone-900 text-white rounded-xl px-3 py-3 flex items-center gap-1.5"
+            >
+              {copied ? <Check size={16} /> : <Copy size={16} />}
+              <span className="font-display text-sm">{copied ? t('sync.code.copied') : t('sync.code.copy')}</span>
+            </button>
+          </div>
+          <div className="text-[11px] text-stone-400 mt-2 leading-relaxed">{t('sync.info')}</div>
+        </div>
+
+        {/* Link another device */}
+        <div className="border-t border-stone-100 pt-5">
+          <div className="font-mono-special text-[10px] tracking-widest text-stone-400 mb-2">{t('sync.link.label')}</div>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={inputCode}
+              onChange={e => { setInputCode(e.target.value.toUpperCase()); setLinkState('idle'); }}
+              placeholder={t('sync.link.placeholder')}
+              maxLength={9}
+              className="flex-1 bg-stone-100 rounded-xl px-4 py-3 font-mono-special text-sm tracking-widest outline-none focus:ring-2 focus:ring-stone-300"
+            />
+            <button
+              onClick={handleLink}
+              disabled={linkState === 'loading' || linkState === 'ok'}
+              className="flex-shrink-0 bg-stone-900 text-white rounded-xl px-4 py-3 font-display text-sm disabled:opacity-50 flex items-center gap-1.5"
+            >
+              {linkState === 'loading' ? <Loader2 size={14} className="animate-spin" /> : <Link2 size={14} />}
+              {t('sync.link.button')}
+            </button>
+          </div>
+          {linkState === 'ok' && (
+            <div className="text-emerald-600 text-sm mt-2 flex items-center gap-1"><Check size={14} />{t('sync.link.linked')}</div>
+          )}
+          {linkState === 'notfound' && (
+            <div className="text-rose-500 text-sm mt-2">{t('sync.link.notfound')}</div>
+          )}
+          {linkState === 'error' && (
+            <div className="text-rose-500 text-sm mt-2">{t('sync.status.error')}</div>
+          )}
+        </div>
+
+        {/* Status */}
+        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-stone-100">
+          <SyncIcon status={syncStatus} size={14} />
+          <span className="text-[11px] text-stone-400 font-mono-special">
+            {t(`sync.status.${syncStatus === 'idle' ? 'syncing' : syncStatus}`)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// =========================
 // HOME SIDEBAR (desktop only)
 // =========================
-function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, activeView }) {
+function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, activeView, syncCode, syncStatus, showSyncPanel, setShowSyncPanel, onLinkCode }) {
   const { t } = useLang();
 
   const sections = [
@@ -2377,8 +2669,22 @@ function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetCl
         })}
       </div>
 
-      <div className="text-center text-[10px] text-stone-300 mt-4 font-mono-special tracking-widest">
-        {t('home.autosave')}
+      {/* Sync footer */}
+      <div className="mt-4 pt-4 border-t border-stone-100">
+        <button
+          onClick={() => setShowSyncPanel(true)}
+          className="w-full flex items-center justify-between rounded-xl px-3 py-2 hover:bg-stone-50 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <SyncIcon status={syncStatus} size={14} />
+            <span className="font-mono-special text-[10px] text-stone-400 tracking-wider">
+              {t(`sync.status.${syncStatus === 'idle' ? 'syncing' : syncStatus}`)}
+            </span>
+          </div>
+          {syncCode && (
+            <span className="font-mono-special text-[10px] text-stone-300">{syncCode}</span>
+          )}
+        </button>
       </div>
     </div>
   );
@@ -2388,7 +2694,7 @@ function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetCl
 // =========================
 // HOME VIEW
 // =========================
-function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick }) {
+function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, syncStatus, onSyncClick }) {
   const { t } = useLang();
   return (
     <div className="px-4 pt-6">
@@ -2399,6 +2705,14 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
           <div className="text-xs text-stone-500 mt-1">{t('home.brand.location')}</div>
         </div>
         <div className="flex items-center gap-1">
+          <button
+            onClick={onSyncClick}
+            className="text-stone-400 hover:text-stone-600 p-2"
+            aria-label={t('sync.title')}
+            title={t(`sync.status.${syncStatus === 'idle' ? 'syncing' : syncStatus}`)}
+          >
+            <SyncIcon status={syncStatus} size={18} />
+          </button>
           <InstallPrompt />
           <LangPicker />
           <button
