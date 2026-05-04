@@ -1032,11 +1032,11 @@ const T = {
     'home.action.repes.sub.empty': 'todavía nada',
     'home.sections': 'SECCIONES DEL ÁLBUM',
     'home.autosave': 'SE GUARDA AUTOMÁTICAMENTE',
-    'section.intro.title': 'Introducción',
+    'section.intro.title': 'FWC',
     'section.intro.sub': 'Trofeo, mascota, estadios',
     'section.teams.title': 'Equipos',
     'section.teams.sub': '48 selecciones · 12 grupos',
-    'section.museum.title': 'Museo FIFA',
+    'section.museum.title': 'FWC',
     'section.museum.sub': 'Campeones de la historia',
     'section.coca.title': 'Extras Coca-Cola',
     'section.coca.sub': 'No cuentan en el 980',
@@ -1148,11 +1148,11 @@ const T = {
     'home.action.repes.sub.empty': 'none yet',
     'home.sections': 'ALBUM SECTIONS',
     'home.autosave': 'AUTO-SAVED',
-    'section.intro.title': 'Introduction',
+    'section.intro.title': 'FWC',
     'section.intro.sub': 'Trophy, mascot, stadiums',
     'section.teams.title': 'Teams',
     'section.teams.sub': '48 nations · 12 groups',
-    'section.museum.title': 'FIFA Museum',
+    'section.museum.title': 'FWC',
     'section.museum.sub': 'Champions through history',
     'section.coca.title': 'Coca-Cola Extras',
     'section.coca.sub': 'Not counted in the 980',
@@ -1264,11 +1264,11 @@ const T = {
     'home.action.repes.sub.empty': 'aucun pour l\'instant',
     'home.sections': 'SECTIONS DE L\'ALBUM',
     'home.autosave': 'SAUVEGARDE AUTOMATIQUE',
-    'section.intro.title': 'Introduction',
+    'section.intro.title': 'FWC',
     'section.intro.sub': 'Trophée, mascotte, stades',
     'section.teams.title': 'Équipes',
     'section.teams.sub': '48 nations · 12 groupes',
-    'section.museum.title': 'Musée FIFA',
+    'section.museum.title': 'FWC',
     'section.museum.sub': 'Champions de l\'histoire',
     'section.coca.title': 'Extras Coca-Cola',
     'section.coca.sub': 'Pas comptées dans les 980',
@@ -1380,11 +1380,11 @@ const T = {
     'home.action.repes.sub.empty': 'ancora niente',
     'home.sections': 'SEZIONI DELL\'ALBUM',
     'home.autosave': 'SALVATAGGIO AUTOMATICO',
-    'section.intro.title': 'Introduzione',
+    'section.intro.title': 'FWC',
     'section.intro.sub': 'Trofeo, mascotte, stadi',
     'section.teams.title': 'Squadre',
     'section.teams.sub': '48 nazionali · 12 gironi',
-    'section.museum.title': 'Museo FIFA',
+    'section.museum.title': 'FWC',
     'section.museum.sub': 'Campioni della storia',
     'section.coca.title': 'Extra Coca-Cola',
     'section.coca.sub': 'Non contano nelle 980',
@@ -1496,11 +1496,11 @@ const T = {
     'home.action.repes.sub.empty': 'ainda nada',
     'home.sections': 'SEÇÕES DO ÁLBUM',
     'home.autosave': 'SALVO AUTOMATICAMENTE',
-    'section.intro.title': 'Introdução',
+    'section.intro.title': 'FWC',
     'section.intro.sub': 'Troféu, mascote, estádios',
     'section.teams.title': 'Seleções',
     'section.teams.sub': '48 seleções · 12 grupos',
-    'section.museum.title': 'Museu FIFA',
+    'section.museum.title': 'FWC',
     'section.museum.sub': 'Campeões da história',
     'section.coca.title': 'Extras Coca-Cola',
     'section.coca.sub': 'Não contam nas 980',
@@ -1758,16 +1758,16 @@ function allStickers(counts, names, t, countryName) {
       key: 'intro',
       sectionTitle: introTitle,
       sectionSort: 0,
-      number: i + 1,
+      number: i,
       label,
       flag: info.flag,
       code: info.code,
       accent: info.accent,
       count: counts[id] || 0,
-      searchable: normalize(`${label} ${info.code} ${introTitle} intro introduccion introduction introduzione introducao`),
+      searchable: normalize(`${label} ${info.code} ${introTitle} fwc intro introduccion introduction introduzione introducao`),
     });
   });
-  // Museum
+  // Museum (album numbers continue from INTRO: 9..19)
   MUSEUM_INFO.forEach((info, i) => {
     const id = `MUSEUM-${i + 1}`;
     const label = t(info.labelKey);
@@ -1776,13 +1776,13 @@ function allStickers(counts, names, t, countryName) {
       key: 'museum',
       sectionTitle: museumTitle,
       sectionSort: 1,
-      number: i + 1,
+      number: i + INTRO_COUNT,
       label,
       flag: info.flag,
       code: info.code,
       accent: info.accent,
       count: counts[id] || 0,
-      searchable: normalize(`${label} ${info.code} ${museumTitle} museo museum musee museu fifa campeon champion`),
+      searchable: normalize(`${label} ${info.code} ${museumTitle} fwc museo museum musee museu fifa campeon champion`),
     });
   });
   // Teams (by groups, in album order)
@@ -2585,10 +2585,15 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
           const id = `${section}-${idx}`;
           const count = counts[id] || 0;
           const label = info.labelKey ? t(info.labelKey) : info.label;
+          // FWC numbering: INTRO 0..8, MUSEUM 9..19 (continues from intro)
+          const displayNum =
+            section === 'INTRO' ? i :
+            section === 'MUSEUM' ? i + INTRO_COUNT :
+            idx;
           return (
             <StickerCell
               key={id}
-              number={idx}
+              number={displayNum}
               count={count}
               accent={info.accent}
               flag={info.flag}
