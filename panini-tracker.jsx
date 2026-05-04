@@ -2077,7 +2077,7 @@ export default function App() {
     <LangContext.Provider value={langCtx}>
     <div className="min-h-screen bg-stone-50 text-stone-900 pb-20" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
-      <div className="max-w-md mx-auto relative">
+      <div className="max-w-md md:max-w-xl lg:max-w-2xl mx-auto relative">
         {/* Decorative pattern background */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.04]"
@@ -2578,7 +2578,7 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
       <Header onBack={onBack} title={config.title} subtitle={config.subtitle} accent={config.accent} />
       <ModeToggle mode={mode} setMode={setMode} />
 
-      <div className="mt-4 grid grid-cols-4 gap-x-2 gap-y-3">
+      <div className="mt-4 grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-2 gap-y-3">
         {config.data.map((info, i) => {
           const idx = i + 1;
           const id = `${section}-${idx}`;
@@ -2787,7 +2787,7 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
       <ModeToggle mode={mode} setMode={setMode} />
 
       {/* Sticker grid — album-style 4 columns with names underneath */}
-      <div className="mt-4 grid grid-cols-4 gap-x-2 gap-y-3">
+      <div className="mt-4 grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-2 gap-y-3">
         {Array.from({ length: 20 }).map((_, i) => {
           const idx = i + 1;
           const id = `${code}-${idx}`;
