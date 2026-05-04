@@ -2107,22 +2107,27 @@ export default function App() {
     <LangContext.Provider value={langCtx}>
     <div className="min-h-screen bg-stone-50 text-stone-900" style={{ fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* Desktop sidebar — hidden on mobile */}
-      <div className="hidden lg:flex flex-col fixed top-0 left-0 h-screen w-80 bg-white border-r border-stone-100 overflow-y-auto z-10">
-        <HomeSidebar
-          pct={pct}
-          dupesPct={dupesPct}
-          stats={stats}
-          sectionStats={sectionStats}
-          onNavigate={navigate}
-          onResetClick={openConfirmReset}
-          activeView={view}
-        />
-      </div>
+      {/* Outer wrapper: mobile = single column, desktop = centered two-column block */}
+      <div className="lg:flex lg:min-h-screen lg:max-w-5xl lg:mx-auto">
 
-      {/* Main content area — offset on desktop to clear sidebar */}
-      <div className="lg:ml-80 pb-20">
-        <div className="max-w-md md:max-w-xl lg:max-w-3xl mx-auto relative">
+        {/* Desktop sidebar */}
+        <div className="hidden lg:block w-80 flex-shrink-0">
+          <div className="sticky top-0 h-screen overflow-y-auto bg-white border-r border-stone-100">
+            <HomeSidebar
+              pct={pct}
+              dupesPct={dupesPct}
+              stats={stats}
+              sectionStats={sectionStats}
+              onNavigate={navigate}
+              onResetClick={openConfirmReset}
+              activeView={view}
+            />
+          </div>
+        </div>
+
+        {/* Main content area */}
+        <div className="flex-1 pb-20">
+        <div className="max-w-md md:max-w-xl mx-auto lg:mx-0 lg:max-w-none relative">
           {/* Decorative pattern background */}
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.04]"
@@ -2213,6 +2218,7 @@ export default function App() {
               />
             )}
           </div>
+        </div>
         </div>
       </div>
 
