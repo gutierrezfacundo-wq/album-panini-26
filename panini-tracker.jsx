@@ -2147,7 +2147,9 @@ export default function App() {
               ? compareCode.slice(0, 4) + '-' + compareCode.slice(4)
               : compareCode;
             const view = { type: 'compare', friendCode, friendData: data };
-            history.replaceState({ view, modal: null }, '');
+            // Keep home in history so back button (and hardware back on Android) works
+            history.replaceState({ view: { type: 'home' }, modal: null }, '');
+            history.pushState({ view, modal: null }, '');
             setView(view);
           }
         }).catch(() => {});
@@ -2518,7 +2520,7 @@ export default function App() {
                 counts={counts}
                 onStickerTap={handleStickerTap}
                 onResultNavigate={(id) => navigate({ ...viewForStickerId(id), focusId: id })}
-                onBack={() => navigate({ type: 'home' })}
+                onBack={goBack}
               />
             )}
           </div>
