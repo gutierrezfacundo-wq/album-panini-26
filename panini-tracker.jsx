@@ -3943,7 +3943,7 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack, syncCod
   const [shareCopied, setShareCopied] = useState(false);
 
   const handleShare = useCallback(() => {
-    const lines = [`${totalRepes} repes · Álbum Panini 2026`, ''];
+    const lines = [`${totalRepes} repes`, ''];
     for (const g of groups) {
       const items = g.items.map(s => {
         const name = s.label || `#${s.number}`;
