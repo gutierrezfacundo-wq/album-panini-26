@@ -2582,7 +2582,7 @@ function SyncPanel({ syncCode, syncStatus, onLinkCode, onClose }) {
 // =========================
 // HOME SIDEBAR (desktop only)
 // =========================
-function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, activeView, syncCode, syncStatus, showSyncPanel, setShowSyncPanel, onLinkCode }) {
+function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, activeView, syncCode, syncStatus, showSyncPanel, setShowSyncPanel, onLinkCode, darkMode, onToggleDark }) {
   const { t } = useLang();
 
   const sections = [
@@ -2603,6 +2603,13 @@ function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetCl
           {t('home.brand.album')} <span className="text-rose-600">26</span>
         </button>
         <div className="flex items-center gap-0.5">
+          <button
+            onClick={onToggleDark}
+            className="text-stone-400 hover:text-stone-600 p-2"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
           <InstallPrompt />
           <LangPicker />
           <button
@@ -2720,7 +2727,7 @@ function HomeSidebar({ pct, dupesPct, stats, sectionStats, onNavigate, onResetCl
 // =========================
 // HOME VIEW
 // =========================
-function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, syncStatus, onSyncClick }) {
+function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick, syncStatus, onSyncClick, darkMode, onToggleDark }) {
   const { t } = useLang();
   return (
     <div className="px-4 pt-6">
@@ -2738,6 +2745,13 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
             title={t(`sync.status.${syncStatus === 'idle' ? 'syncing' : syncStatus}`)}
           >
             <SyncIcon status={syncStatus} size={18} />
+          </button>
+          <button
+            onClick={onToggleDark}
+            className="text-stone-400 hover:text-stone-600 p-2"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
           <InstallPrompt />
           <LangPicker />
@@ -3096,13 +3110,19 @@ function SectionCard({ title, subtitle, collected, total, icon, accent, onClick,
 // =========================
 // SIMPLE GRID VIEW (Intro / Museum / Coca)
 // =========================
-function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, currentView, onReplaceView }) {
+function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, currentView, onReplaceView, focusId }) {
   const { t } = useLang();
   const config = {
     INTRO:  { title: t('section.intro.title'),  subtitle: t('simplegrid.intro.sub'), accent: '#1E40AF', data: INTRO_INFO },
     MUSEUM: { title: t('section.museum.title'), subtitle: t('section.museum.sub'),  accent: '#F59E0B', data: MUSEUM_INFO },
     COCA:   { title: t('section.coca.title'),   subtitle: t('simplegrid.coca.sub'), accent: '#DC2626', data: COCA_INFO },
   }[section];
+
+  useEffect(() => {
+    if (!focusId) return;
+    const el = document.querySelector(`[data-sticker-id="${focusId}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [focusId]);
 
   return (
     <div className="px-4 pt-4">
@@ -3121,19 +3141,21 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
             section === 'MUSEUM' ? i + INTRO_COUNT :
             idx;
           return (
-            <StickerCell
-              key={id}
-              number={displayNum}
-              count={count}
-              accent={info.accent}
-              flag={info.flag}
-              flagCode={info.countryCode || info.code}
-              code={info.code}
-              fixedLabel={label}
-              isPlayer={false}
-              onTap={() => onStickerTap(id)}
-              onEditName={() => {}}
-            />
+            <div key={id} data-sticker-id={id}>
+              <StickerCell
+                number={displayNum}
+                count={count}
+                accent={info.accent}
+                flag={info.flag}
+                flagCode={info.countryCode || info.code}
+                code={info.code}
+                fixedLabel={label}
+                isPlayer={false}
+                onTap={() => onStickerTap(id)}
+                onEditName={() => {}}
+                highlight={focusId === id}
+              />
+            </div>
           );
         })}
       </div>
@@ -3337,22 +3359,24 @@ function TeamView({ code, counts, names, mode, setMode, onStickerTap, onEditName
           const isCustomName = !!names[id];
 
           return (
-            <StickerCell
-              key={id}
-              number={idx}
-              count={count}
-              accent={team.color}
-              flag={team.flag}
-              flagCode={team.code}
-              code={team.code}
-              fixedLabel={fixedLabel}
-              fixedKind={fixedKind}
-              playerName={playerName}
-              isCustomName={isCustomName}
-              isPlayer={isPlayer}
-              onTap={() => onStickerTap(id)}
-              onEditName={() => onEditName(id)}
-            />
+            <div key={id} data-sticker-id={id}>
+              <StickerCell
+                number={idx}
+                count={count}
+                accent={team.color}
+                flag={team.flag}
+                flagCode={team.code}
+                code={team.code}
+                fixedLabel={fixedLabel}
+                fixedKind={fixedKind}
+                playerName={playerName}
+                isCustomName={isCustomName}
+                isPlayer={isPlayer}
+                onTap={() => onStickerTap(id)}
+                onEditName={() => onEditName(id)}
+                highlight={focusId === id}
+              />
+            </div>
           );
         })}
       </div>
@@ -3823,6 +3847,40 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
     return arr;
   }, [repes]);
 
+  const [shareCopied, setShareCopied] = useState(false);
+
+  const handleShare = useCallback(() => {
+    const lines = [`${totalRepes} repes · Álbum Panini 2026`, ''];
+    for (const g of groups) {
+      const items = g.items
+        .map(s => {
+          const name = s.displayName || s.name || '';
+          if (!name) return null;
+          return `${name} (×${s.count - 1})`;
+        })
+        .filter(Boolean);
+      if (items.length > 0) {
+        lines.push(`${g.title}:`);
+        lines.push(items.join(', '));
+        lines.push('');
+      }
+    }
+    lines.push('album26.app');
+    const text = lines.join('\n');
+
+    const doCopy = () => {
+      navigator.clipboard.writeText(text).catch(() => {});
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2000);
+    };
+
+    if (navigator.share) {
+      navigator.share({ text }).catch(() => doCopy());
+    } else {
+      doCopy();
+    }
+  }, [groups, totalRepes]);
+
   return (
     <div className="px-4 pt-4 pb-8">
       <button
@@ -3842,11 +3900,22 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack }) {
             {t('repes.label')}
           </div>
           <div className="font-display text-2xl mt-1">{t('repes.title')}</div>
-          <div className="flex items-baseline gap-2 mt-2">
-            <div className="font-display text-4xl">{totalRepes}</div>
-            <div className="text-sm text-stone-500">
-              {totalRepes === 1 ? t('repes.figRepeated') : t('repes.figRepeatedPlural')}
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-baseline gap-2">
+              <div className="font-display text-4xl">{totalRepes}</div>
+              <div className="text-sm text-stone-500">
+                {totalRepes === 1 ? t('repes.figRepeated') : t('repes.figRepeatedPlural')}
+              </div>
             </div>
+            {repes.length > 0 && (
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
+              >
+                <Share size={13} />
+                {shareCopied ? t('repes.share.copied') : t('repes.share')}
+              </button>
+            )}
           </div>
           {repes.length > 0 && (
             <div className="text-xs text-stone-500 mt-1">
