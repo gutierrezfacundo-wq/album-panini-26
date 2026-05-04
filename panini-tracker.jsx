@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share } from 'lucide-react';
 
 // =========================
 // DATA
@@ -1105,6 +1105,12 @@ const T = {
     'reset.cancel': 'Cancelar',
     'reset.confirm': 'Borrar todo',
     'lang.picker': 'Idioma',
+    'install.button': 'Instalar app',
+    'install.subtitle': 'Tenelo a mano en tu pantalla de inicio',
+    'install.ios.title': 'Instalar en iPhone',
+    'install.ios.step1': 'Tocá el botón Compartir',
+    'install.ios.step2': 'Elegí "Agregar a pantalla de inicio"',
+    'install.ios.close': 'Entendido',
     'intro.logo': 'Logo Panini',
     'intro.emblem': 'Emblema',
     'intro.emblemVariant': 'Emblema · variante',
@@ -1215,6 +1221,12 @@ const T = {
     'reset.cancel': 'Cancel',
     'reset.confirm': 'Delete all',
     'lang.picker': 'Language',
+    'install.button': 'Install app',
+    'install.subtitle': 'Keep it on your home screen',
+    'install.ios.title': 'Install on iPhone',
+    'install.ios.step1': 'Tap the Share button',
+    'install.ios.step2': 'Choose "Add to Home Screen"',
+    'install.ios.close': 'Got it',
     'intro.logo': 'Panini Logo',
     'intro.emblem': 'Emblem',
     'intro.emblemVariant': 'Emblem · variant',
@@ -1325,6 +1337,12 @@ const T = {
     'reset.cancel': 'Annuler',
     'reset.confirm': 'Tout effacer',
     'lang.picker': 'Langue',
+    'install.button': 'Installer l\'app',
+    'install.subtitle': 'Gardez-la sur votre écran d\'accueil',
+    'install.ios.title': 'Installer sur iPhone',
+    'install.ios.step1': 'Touchez le bouton Partager',
+    'install.ios.step2': 'Choisissez "Sur l\'écran d\'accueil"',
+    'install.ios.close': 'Compris',
     'intro.logo': 'Logo Panini',
     'intro.emblem': 'Emblème',
     'intro.emblemVariant': 'Emblème · variante',
@@ -1435,6 +1453,12 @@ const T = {
     'reset.cancel': 'Annulla',
     'reset.confirm': 'Cancella tutto',
     'lang.picker': 'Lingua',
+    'install.button': 'Installa l\'app',
+    'install.subtitle': 'Tienila a portata sulla schermata Home',
+    'install.ios.title': 'Installa su iPhone',
+    'install.ios.step1': 'Tocca il pulsante Condividi',
+    'install.ios.step2': 'Scegli "Aggiungi a Home"',
+    'install.ios.close': 'Ho capito',
     'intro.logo': 'Logo Panini',
     'intro.emblem': 'Emblema',
     'intro.emblemVariant': 'Emblema · variante',
@@ -1545,6 +1569,12 @@ const T = {
     'reset.cancel': 'Cancelar',
     'reset.confirm': 'Apagar tudo',
     'lang.picker': 'Idioma',
+    'install.button': 'Instalar app',
+    'install.subtitle': 'Tenha à mão na sua tela inicial',
+    'install.ios.title': 'Instalar no iPhone',
+    'install.ios.step1': 'Toque no botão Compartilhar',
+    'install.ios.step2': 'Escolha "Adicionar à Tela de Início"',
+    'install.ios.close': 'Entendi',
     'intro.logo': 'Logo Panini',
     'intro.emblem': 'Emblema',
     'intro.emblemVariant': 'Emblema · variante',
@@ -2218,6 +2248,8 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
         </div>
       </div>
 
+      <InstallPrompt />
+
       {/* Quick actions: Buscar & Mis repes */}
       <div className="grid grid-cols-2 gap-2 mt-3">
         <button
@@ -2298,6 +2330,124 @@ function HomeView({ pct, dupesPct, stats, sectionStats, onNavigate, onResetClick
 
       <div className="text-center text-[11px] text-stone-400 mt-8 font-mono-special tracking-widest">
         {t('home.autosave')}
+      </div>
+    </div>
+  );
+}
+
+function InstallPrompt() {
+  const { t } = useLang();
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showIosModal, setShowIosModal] = useState(false);
+  const [installed, setInstalled] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.navigator.standalone === true) return true;
+    return false;
+  });
+
+  useEffect(() => {
+    const onBeforeInstall = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    const onAppInstalled = () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+    };
+    window.addEventListener('beforeinstallprompt', onBeforeInstall);
+    window.addEventListener('appinstalled', onAppInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstall);
+      window.removeEventListener('appinstalled', onAppInstalled);
+    };
+  }, []);
+
+  if (installed) return null;
+
+  const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isSafari = isIOS && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+  const canShow = !!deferredPrompt || isIOS;
+  if (!canShow) return null;
+
+  const handleClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      try {
+        const choice = await deferredPrompt.userChoice;
+        if (choice && choice.outcome === 'accepted') setInstalled(true);
+      } catch (e) {}
+      setDeferredPrompt(null);
+    } else if (isIOS) {
+      setShowIosModal(true);
+    }
+  };
+
+  return (
+    <>
+      <button
+        onClick={handleClick}
+        className="w-full mt-3 bg-stone-900 text-white rounded-2xl panini-shadow p-3 flex items-center gap-3 active:scale-[0.99] transition-transform text-left"
+      >
+        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+          <Download size={18} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="font-display text-sm leading-tight">{t('install.button')}</div>
+          <div className="text-[10px] text-white/60 leading-tight mt-0.5">{t('install.subtitle')}</div>
+        </div>
+        <ChevronRight size={18} className="text-white/50 flex-shrink-0" />
+      </button>
+      {showIosModal && <IosInstallModal onClose={() => setShowIosModal(false)} isSafari={isSafari} />}
+    </>
+  );
+}
+
+function IosInstallModal({ onClose, isSafari }) {
+  const { t } = useLang();
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-3xl p-5 panini-shadow max-w-md w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="font-display text-lg">{t('install.ios.title')}</div>
+          <button onClick={onClose} className="text-stone-400 active:text-stone-700 -mr-1 p-1">
+            <X size={18} />
+          </button>
+        </div>
+        <ol className="space-y-3 text-sm text-stone-700">
+          <li className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-stone-900 text-white flex items-center justify-center font-mono-special text-xs flex-shrink-0">1</div>
+            <div className="flex items-center gap-1.5 pt-0.5">
+              <span>{t('install.ios.step1')}</span>
+              <Share size={16} className="text-stone-500" />
+            </div>
+          </li>
+          <li className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-stone-900 text-white flex items-center justify-center font-mono-special text-xs flex-shrink-0">2</div>
+            <div className="flex items-center gap-1.5 pt-0.5">
+              <span>{t('install.ios.step2')}</span>
+              <Plus size={16} className="text-stone-500" />
+            </div>
+          </li>
+        </ol>
+        {!isSafari && (
+          <div className="mt-4 text-[11px] text-stone-500 bg-stone-100 rounded-xl px-3 py-2">
+            ⚠️ Safari
+          </div>
+        )}
+        <button
+          onClick={onClose}
+          className="mt-5 w-full py-3 rounded-xl bg-stone-900 text-white font-medium active:bg-stone-700"
+        >
+          {t('install.ios.close')}
+        </button>
       </div>
     </div>
   );
