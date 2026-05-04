@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Minus, Trophy, RotateCcw, Sparkles, Star, Users, Flame, Hash, Pencil, ArrowRight, X, Search, Download, Share, Languages } from 'lucide-react';
 
 // =========================
 // DATA
@@ -2473,11 +2473,11 @@ function LangPicker() {
         className="text-stone-500 hover:text-stone-900 p-2 flex items-center gap-1"
         aria-label={t('lang.picker')}
       >
-        <span className="text-base leading-none">{LANG_INFO[lang].flag}</span>
+        <Languages size={16} />
         <span className="font-mono-special text-[10px] font-bold uppercase">{lang}</span>
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1 bg-white rounded-xl panini-shadow z-30 min-w-[140px] py-1 overflow-hidden">
+        <div className="absolute right-0 top-full mt-1 bg-white rounded-xl panini-shadow z-30 min-w-[160px] py-1 overflow-hidden">
           {SUPPORTED_LANGS.map(code => (
             <button
               key={code}
@@ -2486,7 +2486,7 @@ function LangPicker() {
                 code === lang ? 'bg-stone-100 font-semibold' : 'hover:bg-stone-50'
               }`}
             >
-              <span className="text-base leading-none">{LANG_INFO[code].flag}</span>
+              <span className="font-mono-special text-[10px] bg-stone-200 text-stone-700 px-1.5 py-0.5 rounded uppercase">{code}</span>
               <span className="flex-1">{LANG_INFO[code].label}</span>
               {code === lang && <Check size={14} className="text-emerald-600" />}
             </button>
