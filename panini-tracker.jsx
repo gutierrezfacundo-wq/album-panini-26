@@ -2042,6 +2042,18 @@ function viewForStickerId(id) {
   return { type: 'home' };
 }
 
+// Real Panini album page number for a sticker. Each team takes a 2-page spread:
+// stickers #1–#12 on the left page, #13–#20 on the right.
+// Special sections (INTRO/MUSEUM/COCA) don't have explicit page numbers here.
+function albumPageFor(id) {
+  if (id.startsWith('INTRO-') || id.startsWith('MUSEUM-') || id.startsWith('COCA-')) return 0;
+  const [code, numStr] = id.split('-');
+  const team = TEAM_BY_CODE[code];
+  if (!team || !team.page) return 0;
+  const n = parseInt(numStr, 10);
+  return n >= 13 ? team.page + 1 : team.page;
+}
+
 // =========================
 // FIREBASE SYNC UTILS
 // =========================
@@ -3838,7 +3850,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
 function ResultRow({ s, onTap }) {
   const { t } = useLang();
   const fg = textOn(s.accent);
-  const pageNum = pageIndexOf(viewForStickerId(s.id)) + 1;
+  const pageNum = albumPageFor(s.id);
   return (
     <button
       onClick={() => onTap(s.id)}
