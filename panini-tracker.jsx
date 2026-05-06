@@ -1097,6 +1097,10 @@ const T = {
     'search.results': 'RESULTADOS',
     'search.tapHint.add': 'TOCÁ UN RESULTADO PARA SUMAR',
     'search.tapHint.sub': 'TOCÁ UN RESULTADO PARA RESTAR',
+    'search.tapHint.go': 'TOCÁ UN RESULTADO PARA IR A LA PÁGINA',
+    'search.page': 'Pág.',
+    'teams.filter.placeholder': 'Buscar equipo o país...',
+    'teams.filter.empty': 'Ningún equipo coincide',
     'result.noName': '(sin nombre)',
     'result.missing': 'FALTA',
     'repes.label': 'PARA INTERCAMBIAR',
@@ -1244,6 +1248,10 @@ const T = {
     'search.results': 'RESULTS',
     'search.tapHint.add': 'TAP A RESULT TO ADD',
     'search.tapHint.sub': 'TAP A RESULT TO SUBTRACT',
+    'search.tapHint.go': 'TAP A RESULT TO OPEN ITS PAGE',
+    'search.page': 'Pg.',
+    'teams.filter.placeholder': 'Search team or country...',
+    'teams.filter.empty': 'No team matches',
     'result.noName': '(no name)',
     'result.missing': 'MISSING',
     'repes.label': 'TO TRADE',
@@ -1391,6 +1399,10 @@ const T = {
     'search.results': 'RÉSULTATS',
     'search.tapHint.add': 'TOUCHEZ UN RÉSULTAT POUR AJOUTER',
     'search.tapHint.sub': 'TOUCHEZ UN RÉSULTAT POUR SOUSTRAIRE',
+    'search.tapHint.go': 'TOUCHEZ UN RÉSULTAT POUR OUVRIR SA PAGE',
+    'search.page': 'P.',
+    'teams.filter.placeholder': 'Chercher équipe ou pays...',
+    'teams.filter.empty': 'Aucune équipe',
     'result.noName': '(sans nom)',
     'result.missing': 'MANQUE',
     'repes.label': 'À ÉCHANGER',
@@ -1538,6 +1550,10 @@ const T = {
     'search.results': 'RISULTATI',
     'search.tapHint.add': 'TOCCA UN RISULTATO PER AGGIUNGERE',
     'search.tapHint.sub': 'TOCCA UN RISULTATO PER SOTTRARRE',
+    'search.tapHint.go': 'TOCCA UN RISULTATO PER APRIRE LA PAGINA',
+    'search.page': 'Pag.',
+    'teams.filter.placeholder': 'Cerca squadra o paese...',
+    'teams.filter.empty': 'Nessuna squadra',
     'result.noName': '(senza nome)',
     'result.missing': 'MANCA',
     'repes.label': 'DA SCAMBIARE',
@@ -1685,6 +1701,10 @@ const T = {
     'search.results': 'RESULTADOS',
     'search.tapHint.add': 'TOQUE NUM RESULTADO PARA SOMAR',
     'search.tapHint.sub': 'TOQUE NUM RESULTADO PARA SUBTRAIR',
+    'search.tapHint.go': 'TOQUE NUM RESULTADO PARA ABRIR A PÁGINA',
+    'search.page': 'Pág.',
+    'teams.filter.placeholder': 'Buscar time ou país...',
+    'teams.filter.empty': 'Nenhum time encontrado',
     'result.noName': '(sem nome)',
     'result.missing': 'FALTA',
     'repes.label': 'PARA TROCAR',
@@ -3279,13 +3299,52 @@ function SimpleGridView({ section, counts, mode, setMode, onStickerTap, onBack, 
 // =========================
 function GroupsView({ counts, teamStats, onTeamSelect, onBack }) {
   const { t, countryName } = useLang();
+  const [filter, setFilter] = useState('');
+  const nq = normalize(filter.trim());
+  const matches = useCallback((tm) => {
+    if (!nq) return true;
+    return normalize(countryName(tm.code)).includes(nq) || normalize(tm.code).includes(nq);
+  }, [nq, countryName]);
+  const visibleGroups = useMemo(() => {
+    return GROUPS.map(g => ({ g, teams: TEAMS_BY_GROUP[g].filter(matches) }))
+                 .filter(x => x.teams.length > 0);
+  }, [matches]);
+
   return (
     <div className="px-4 pt-4">
       <Header onBack={onBack} title={t('section.teams.title')} subtitle={t('section.teams.sub')} accent="#E11D48" />
 
+      <div className="mt-4 bg-white rounded-2xl panini-shadow p-2 flex items-center gap-2">
+        <Search size={18} className="text-stone-400 ml-2 flex-shrink-0" />
+        <input
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder={t('teams.filter.placeholder')}
+          className="flex-1 bg-transparent outline-none text-base py-2 min-w-0"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+        />
+        {filter && (
+          <button
+            onClick={() => setFilter('')}
+            className="text-stone-400 active:text-stone-700 p-1.5 mr-1 flex-shrink-0"
+          >
+            <X size={16} />
+          </button>
+        )}
+      </div>
+
+      {visibleGroups.length === 0 && (
+        <div className="mt-8 text-center text-stone-500 text-sm">
+          {t('teams.filter.empty')}
+        </div>
+      )}
+
       <div className="mt-4 space-y-5">
-        {GROUPS.map(g => {
-          const teams = TEAMS_BY_GROUP[g];
+        {visibleGroups.map(({ g, teams }) => {
           const groupCollected = teams.reduce((s, tm) => s + teamStats(tm.code).collected, 0);
           const groupTotal = teams.length * 20;
           return (
@@ -3779,6 +3838,7 @@ function NameEditModal({ stickerId, currentName, onCancel, onSave, onSaveAndNext
 function ResultRow({ s, onTap }) {
   const { t } = useLang();
   const fg = textOn(s.accent);
+  const pageNum = pageIndexOf(viewForStickerId(s.id)) + 1;
   return (
     <button
       onClick={() => onTap(s.id)}
@@ -3804,6 +3864,7 @@ function ResultRow({ s, onTap }) {
         </div>
         <div className="text-[10px] text-stone-500 truncate font-mono-special tracking-wider mt-0.5">
           {s.sectionTitle} · #{String(s.number).padStart(2, '0')}
+          {pageNum > 0 && <> · {t('search.page')} {pageNum}</>}
         </div>
       </div>
       <div className="flex-shrink-0">
@@ -3881,8 +3942,6 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
         )}
       </div>
 
-      <ModeToggle mode={mode} setMode={setMode} />
-
       {isEmpty ? (
         <div className="mt-6 px-1 text-stone-500">
           <div className="font-mono-special text-[10px] tracking-widest text-stone-400 mb-3">
@@ -3909,12 +3968,12 @@ function SearchView({ counts, names, mode, setMode, onStickerTap, onResultNaviga
           </div>
           <div className="space-y-1.5">
             {results.map(s => {
-              return <ResultRow key={s.id} s={s} onTap={onStickerTap} />;
+              return <ResultRow key={s.id} s={s} onTap={onResultNavigate} />;
             })}
           </div>
 
           <div className="text-center text-[11px] text-stone-400 mt-6 font-mono-special tracking-widest">
-            {mode === 'add' ? t('search.tapHint.add') : t('search.tapHint.sub')}
+            {t('search.tapHint.go')}
           </div>
         </>
       )}
