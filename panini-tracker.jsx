@@ -4023,22 +4023,12 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack, syncCod
   const [shareCopied, setShareCopied] = useState(false);
 
   const handleShare = useCallback(() => {
-    const lines = [`${totalRepes} repes`, ''];
-    for (const g of groups) {
-      const items = g.items.map(s => {
-        const name = s.label || `#${s.number}`;
-        return `#${s.number} ${name} ×${s.count - 1}`;
-      });
-      if (items.length > 0) {
-        lines.push(g.title);
-        for (const item of items) lines.push(`  ${item}`);
-        lines.push('');
-      }
-    }
+    const lines = [];
     if (syncCode) {
       lines.push(t('repes.share.intro'));
       lines.push(`https://album26.app/?compare=${syncCode.replace('-', '')}`);
     } else {
+      lines.push(`${totalRepes} repes`);
       lines.push('https://album26.app');
     }
     const text = lines.join('\n');
@@ -4054,7 +4044,7 @@ function RepesView({ counts, names, mode, setMode, onStickerTap, onBack, syncCod
     } else {
       doCopy();
     }
-  }, [groups, totalRepes, syncCode, t]);
+  }, [totalRepes, syncCode, t]);
 
   return (
     <div className="px-4 pt-4 pb-8">
